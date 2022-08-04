@@ -2,16 +2,21 @@ import {
     login
 } from '@/api/user'
 
+import { setToken, getToken } from '@/libs/util'
+
 export default {
     state: {
         userCode: '',
         userName: '',
         avatarImgPath: '',
-        // token: getToken()
+        token: getToken()
     },
 
     mutations: {
-
+        setToken(state, token) {
+            state.token = token
+            setToken(token)
+        }
     },
 
     getters: {
