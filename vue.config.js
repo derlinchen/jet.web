@@ -1,7 +1,9 @@
 const { defineConfig } = require('@vue/cli-service')
 const path = require('path')
 
-const { NODE_ENV, VUE_APP_TITLE = '' } = process.env
+const { NODE_ENV, VUE_APP_TITLE = '', VUE_APP_API } = process.env
+
+console.log(process.env)
 
 const config = {
   transpileDependencies: false,
@@ -34,8 +36,8 @@ const config = {
     port: 8080,
     host: 'localhost',
     proxy: {
-      '/api': {
-        target: 'https://localhost:8080',
+      '/jet': {
+        target: VUE_APP_API,
         changeOrigin: true
       }
     }
