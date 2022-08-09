@@ -8,9 +8,9 @@ export const login = ({ userCode, password }) => {
 
     return request.request({
         header: {
-            'Content-Type':'application/json'
+            'Content-Type': 'application/json'
         },
-        url: 'sysUser/v1/login',
+        url: 'erp/sysUser/v1/login',
         data: param,
         method: 'post'
     })
