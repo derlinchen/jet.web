@@ -1,15 +1,18 @@
-import axios from 'axios'
+import request from '@/libs/request'
 
-export const login = ({userName, password}) => {
+export const login = ({ userCode, password }) => {
     const param = {
-        'userName': userName,
+        'userCode': userCode,
         'password': password
     }
 
-    return axios.request({
-        url:'/jet/user/login',
-        param,
-        method:'post'
+    return request.request({
+        header: {
+            'Content-Type':'application/json'
+        },
+        url: 'sysUser/v1/login',
+        data: param,
+        method: 'post'
     })
 }
 

@@ -36,7 +36,7 @@ const config = {
     port: 8080,
     host: 'localhost',
     proxy: {
-      '/jet': {
+      '/erp': {
         target: VUE_APP_API,
         changeOrigin: true
       }

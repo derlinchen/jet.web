@@ -1,17 +1,17 @@
 <style lang="less">
-   @import './login.less';
+@import './login.less';
 </style>
 
 <template>
   <div class="login">
     <div class="login-con">
-        <Card icon="log-in" title="欢迎登录" :bordered="false">
-          <div class="form-con">
-            <login-form @on-success-valid="handleSubmit"></login-form>
-            <p class="login-tip">输入任意用户名和密码即可</p>
-          </div>
-        </Card>
-      </div>
+      <Card icon="log-in" title="欢迎登录" :bordered="false">
+        <div class="form-con">
+          <login-form @on-success-valid="handleSubmit"></login-form>
+          <p class="login-tip">输入任意用户名和密码即可</p>
+        </div>
+      </Card>
+    </div>
   </div>
 </template>
 
@@ -26,10 +26,9 @@ export default {
     ...mapActions([
       'handleLogin'
     ]),
-    handleSubmit ({ userName, password }) {
-      alert(1);
-      this.handleLogin({ userName, password }).then(res => {
-        alert(2);
+    handleSubmit({ userCode, password }) {
+      this.handleLogin({ userCode, password }).then(res => {
+
       })
     }
   }

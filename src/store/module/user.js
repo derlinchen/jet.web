@@ -25,11 +25,11 @@ export default {
 
 
     actions: {
-        handleLogin({ commit }, { userName, password }) {
-            userName = userName.trim()
+        handleLogin({ commit }, { userCode, password }) {
+            userCode = userCode.trim()
             return new Promise((resolve, reject) => {
                 login({
-                    userName,
+                    userCode,
                     password
                 }).then(res => {
                     // const data = res.data
