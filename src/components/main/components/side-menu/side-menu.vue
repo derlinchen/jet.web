@@ -4,16 +4,22 @@
         <Menu ref="menu" v-show="!collapsed" :active-name="activeName" :open-names="openedNames" :accordion="accordion"
             :theme="theme" width="auto" @on-select="handleSelect">
             <template v-for="item in menuList">
-                {{item.name}}
+                
+                <side-menu-item v-if="showChildren(item)" :key="`menu-parent-${item.name}`" :parent-item="item"></side-menu-item>
+                <menu-item v-else  :name="item.name" :key="`menu-${item.name}`"><common-icon :type="item.icon || ''"/><span>{{ item.title }}</span></menu-item>
+                
             </template>
         </Menu>
     </div>
 </template>
 
 <script>
+import mixin from './mixin'
+
+
 export default {
     name: 'SideMenu',
-
+    mixins: [ mixin ],
     props: {
         menuList: {
             type: Array,
@@ -21,6 +27,11 @@ export default {
                 return []
             }
         },
+        theme: {
+            type: String,
+            default: 'dark'
+        },
+
     },
 
     computed: {
