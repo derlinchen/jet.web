@@ -14,3 +14,14 @@ export const getToken = () => {
   if (token) return token
   else return false
 }
+
+
+export const setMenuListInLocalstorage = list => {
+  localStorage.menuList = JSON.stringify(list)
+}
+
+export const getMenuListFromLocalstorage = () => {
+  const list = localStorage.menuList
+  return list ? JSON.parse(list) : []
+}
+

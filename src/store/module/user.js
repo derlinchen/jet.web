@@ -2,7 +2,7 @@ import {
     login
 } from '@/api/user'
 
-import { setToken, getToken } from '@/libs/util'
+import { setToken, getToken, setMenuListInLocalstorage,} from '@/libs/util'
 
 export default {
     state: {
@@ -18,13 +18,21 @@ export default {
             state.token = token
             setToken(token)
         },
+        setUserCode(state, userCode) {
+            state.userCode = userCode
+        },
+        setUserName(state, userName) {
+            state.userName = userName
+        },
         setMenuList(state, menuList) {
             state.menuList = menuList
         }
     },
 
     getters: {
-
+        getMenuList(state) {
+            return state.menuList
+        }
     },
 
 
@@ -38,7 +46,9 @@ export default {
                 }).then(res => {
                     const data = res.data
                     commit('setToken', data.token)
-                    commit('setMenuList', data.menuList)
+                    commit('setUserCode', data.userCode)
+                    commit('setUserName', data.userName)
+                    setMenuListInLocalstorage([...data.menuList])
                     const defaultRoute = data.menuList[0].url
                     resolve(defaultRoute)
                 }).catch(err => {
