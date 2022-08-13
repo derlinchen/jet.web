@@ -1,7 +1,9 @@
 import Cookies from 'js-cookie'
+import config from '@/config'
 
 
 export const TOKEN_KEY = 'token'
+const {cookieExpires} = config
 
 export const setToken = (token) => {
   Cookies.set(TOKEN_KEY, token, { expires: cookieExpires || 1 })

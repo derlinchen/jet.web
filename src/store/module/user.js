@@ -9,6 +9,7 @@ export default {
         userCode: '',
         userName: '',
         avatarImgPath: '',
+        menuList:[],
         token: getToken()
     },
 
@@ -16,6 +17,9 @@ export default {
         setToken(state, token) {
             state.token = token
             setToken(token)
+        },
+        setMenuList(state, menuList) {
+            state.menuList = menuList
         }
     },
 
@@ -34,7 +38,9 @@ export default {
                 }).then(res => {
                     const data = res.data
                     commit('setToken', data.token)
-                    resolve()
+                    commit('setMenuList', data.menuList)
+                    const defaultRoute = data.menuList[0].url
+                    resolve(defaultRoute)
                 }).catch(err => {
                     reject(err)
                 })

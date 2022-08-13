@@ -28,8 +28,10 @@ export default {
     ]),
     handleSubmit({ userCode, password }) {
       this.handleLogin({ userCode, password }).then(res => {
-
-      })
+         this.$router.push({
+            name: res
+          })
+      });
     }
   }
 }
