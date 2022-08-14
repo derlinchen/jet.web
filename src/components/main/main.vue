@@ -49,8 +49,6 @@ export default {
 
     computed: {
         menuList() {
-            alert(1)
-            console.log(getMenuListFromLocalstorage())
             return getMenuListFromLocalstorage()
         },
     },
