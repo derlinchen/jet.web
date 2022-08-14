@@ -3,6 +3,7 @@ import {
 } from '@/api/user'
 
 import { setToken, getToken, setMenuListInLocalstorage,} from '@/libs/util'
+import { Message } from 'view-ui-plus'
 
 export default {
     state: {
@@ -39,7 +40,7 @@ export default {
     actions: {
         handleLogin({ commit }, { userCode, password }) {
             userCode = userCode.trim()
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 login({
                     userCode,
                     password
@@ -52,7 +53,7 @@ export default {
                     const defaultRoute = data.menuList[0].url
                     resolve(defaultRoute)
                 }).catch(err => {
-                    reject(err)
+                
                 })
             })
         }

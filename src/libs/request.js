@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { Message } from 'view-ui-plus';
 
 const request = axios.create({
     // 配置请求超时时间
@@ -16,9 +17,12 @@ request.interceptors.response.use((response) => {
     const res = response.data;
     if (res.code === '200') {
         return res;
+    } else {
+        Message.error(res.message)
     }
-}, () => {
-    alert('请求异常')
+}, (error) => {
+    Message.error('网络连接错误')
+    return Promise.reject(error)
 });
 
 
