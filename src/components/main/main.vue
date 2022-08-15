@@ -15,6 +15,7 @@
             <Header class="header-con">
                 <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange">
                     <user :message-unread-count="unreadCount" :user-avatar="userAvatar"/>
+                    <fullscreen v-model="isFullscreen" style="margin-right: 10px;"/>
                 </header-bar>
 
                 
@@ -45,6 +46,7 @@ import { mapMutations, mapActions, mapGetters } from 'vuex'
 import SideMenu from './components/side-menu'
 import HeaderBar from './components/header-bar'
 import User from './components/user'
+import Fullscreen from './components/fullscreen'
 
 import { getMenuListFromLocalstorage } from '@/libs/util'
 
@@ -57,6 +59,7 @@ export default {
     components: {
         SideMenu,
         HeaderBar,
+        Fullscreen,
         User
     },
 
