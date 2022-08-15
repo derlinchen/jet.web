@@ -14,7 +14,10 @@
         <Layout>
             <Header class="header-con">
                 <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange">
+                    
                 </header-bar>
+
+                
             </Header>
 
             <Content class="main-content-con">
@@ -37,21 +40,24 @@
 
 
 <script>
-import './main.less'
-import { getMenuListFromLocalstorage } from '@/libs/util'
+import { mapMutations, mapActions, mapGetters } from 'vuex'
 
 import SideMenu from './components/side-menu'
 import HeaderBar from './components/header-bar'
+import User from './components/user'
+
+import { getMenuListFromLocalstorage } from '@/libs/util'
 
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
-import { mapMutations, mapActions, mapGetters } from 'vuex'
+import './main.less'
 
 export default {
     name: 'Main',
     components: {
         SideMenu,
-        HeaderBar
+        HeaderBar,
+        User
     },
 
     data() {
@@ -76,7 +82,6 @@ export default {
             
         },
         handleCollapsedChange(state) {
-            console.log(state)
             this.collapsed = state
         }
     },

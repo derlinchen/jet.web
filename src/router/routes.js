@@ -11,7 +11,11 @@ export default [
         name: '_home',
         redirect: '/home',
         component: Main,
-        children:[
+        meta: {
+            hideInMenu: true,
+            notCache: true
+        },
+        children: [
             {
                 path: '/home',
                 name: 'home',
@@ -22,7 +26,7 @@ export default [
                 component: () => import('@/views/home')
             }
         ]
-    },{
+    }, {
         path: '/system',
         name: 'system',
         component: Main,
