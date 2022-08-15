@@ -1,6 +1,5 @@
 import {
-    getBreadCrumbList,
-    getHomeRoute
+    getBreadCrumbList
 } from '@/libs/util'
 
 import router from '@/router'
@@ -17,9 +16,6 @@ export default {
     mutations: {
         setBreadCrumb(state, route) {
             state.breadCrumbList = getBreadCrumbList(route, state.homeRoute)
-        },
-        setHomeRoute(state, routes) {
-            state.homeRoute = getHomeRoute(routes, homeName)
         }
     }
 }
