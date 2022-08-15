@@ -1,9 +1,7 @@
 <template>
     <Layout style="height: 100%" class="main">
-        <Sider hide-trigger collapsible :width="256" :collapsed-width="64" v-model="collapsed" class="left-sider"
-            :style="{ overflow: 'hidden' }">
-            <side-menu accordion ref="sideMenu" :active-name="$route.name" :collapsed="collapsed"
-                @on-select="turnToPage" :menu-list="menuList">
+        <Sider hide-trigger collapsible :width="256" :collapsed-width="64" v-model="collapsed" class="left-sider" :style="{ overflow: 'hidden' }">
+            <side-menu accordion ref="sideMenu" :active-name="$route.name" :collapsed="collapsed" @on-select="turnToPage" :menu-list="menuList">
                 <div class="logo-con">
                     <img v-show="!collapsed" :src="maxLogo" key="max-logo" />
                     <img v-show="collapsed" :src="minLogo" key="min-logo" />
@@ -17,8 +15,6 @@
                     <user :message-unread-count="unreadCount" :user-avatar="userAvatar"/>
                     <fullscreen v-model="isFullscreen" style="margin-right: 10px;"/>
                 </header-bar>
-
-                
             </Header>
 
             <Content class="main-content-con">

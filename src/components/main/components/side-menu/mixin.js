@@ -1,5 +1,4 @@
 import CommonIcon from '@/components/common-icon'
-import { showTitle } from '@/libs/util'
 
 
 export default {
