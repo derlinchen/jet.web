@@ -19,9 +19,9 @@
 
             <Content class="main-content-con">
                 <Layout class="main-layout-con">
-                    <!-- <div class="tag-nav-wrapper">
+                    <div class="tag-nav-wrapper">
                         <tags-nav :value="$route" @input="handleClick" :list="tagNavList" @on-close="handleCloseTag"/>
-                    </div> -->
+                    </div>
                     <Content class="content-wrapper">
                         <keep-alive :include="cacheList">
                             <router-view />
@@ -43,9 +43,8 @@ import SideMenu from './components/side-menu'
 import HeaderBar from './components/header-bar'
 import User from './components/user'
 import Fullscreen from './components/fullscreen'
-
+import TagsNav from './components/tags-nav'
 import { getMenuListFromLocalstorage } from '@/libs/util'
-
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
 import './main.less'
@@ -56,7 +55,8 @@ export default {
         SideMenu,
         HeaderBar,
         Fullscreen,
-        User
+        User,
+        TagsNav
     },
 
     data() {
@@ -80,6 +80,7 @@ export default {
         ...mapMutations([
             'setBreadCrumb',
         ]),
+        
         turnToPage(route) {
             
         },
