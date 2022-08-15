@@ -1,16 +1,13 @@
 <template>
   <div class="user-avatar-dropdown">
     <Dropdown @on-click="handleClick">
-      <Badge :dot="!!messageUnreadCount">
-        <Avatar :src="userAvatar"/>
-      </Badge>
+      <Avatar :src="userAvatar" />
       <Icon :size="18" type="md-arrow-dropdown"></Icon>
-      <DropdownMenu slot="list">
-        <DropdownItem name="message">
-          消息中心<Badge style="margin-left: 10px" :count="messageUnreadCount"></Badge>
-        </DropdownItem>
-        <DropdownItem name="logout">退出登录</DropdownItem>
-      </DropdownMenu>
+      <template v-slot:list>
+        <DropdownMenu>
+          <DropdownItem name="logout">退出登录</DropdownItem>
+        </DropdownMenu>
+      </template>
     </Dropdown>
   </div>
 </template>
@@ -24,33 +21,22 @@ export default {
     userAvatar: {
       type: String,
       default: ''
-    },
-    messageUnreadCount: {
-      type: Number,
-      default: 0
     }
   },
   methods: {
     ...mapActions([
       'handleLogOut'
     ]),
-    logout () {
-      this.handleLogOut().then(() => {
-        this.$router.push({
-          name: 'login'
-        })
-      })
+    logout() {
+      // this.handleLogOut().then(() => {
+      //   this.$router.push({
+      //     name: 'login'
+      //   })
+      // })
     },
-    message () {
-      this.$router.push({
-        name: 'message_page'
-      })
-    },
-    handleClick (name) {
+    handleClick(name) {
       switch (name) {
         case 'logout': this.logout()
-          break
-        case 'message': this.message()
           break
       }
     }

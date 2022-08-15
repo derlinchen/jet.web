@@ -14,7 +14,7 @@
         <Layout>
             <Header class="header-con">
                 <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange">
-                    
+                    <user :message-unread-count="unreadCount" :user-avatar="userAvatar"/>
                 </header-bar>
 
                 
@@ -71,6 +71,9 @@ export default {
     computed: {
         menuList() {
             return getMenuListFromLocalstorage()
+        },
+        userAvatar () {
+            return 'https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png'
         },
     },
 
