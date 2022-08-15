@@ -18,7 +18,17 @@
             </Header>
 
             <Content class="main-content-con">
-
+                <Layout class="main-layout-con">
+                    <!-- <div class="tag-nav-wrapper">
+                        <tags-nav :value="$route" @input="handleClick" :list="tagNavList" @on-close="handleCloseTag"/>
+                    </div> -->
+                    <Content class="content-wrapper">
+                        <keep-alive :include="cacheList">
+                            <router-view />
+                        </keep-alive>
+                        <ABackTop :height="100" :bottom="80" :right="50" container=".content-wrapper"></ABackTop>
+                    </Content>
+                </Layout>
             </Content>
         </Layout>
     </Layout>
@@ -35,7 +45,7 @@ import HeaderBar from './components/header-bar'
 
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
-
+import { mapMutations, mapActions, mapGetters } from 'vuex'
 
 export default {
     name: 'Main',
@@ -59,12 +69,20 @@ export default {
     },
 
     methods: {
+        ...mapMutations([
+            'setBreadCrumb',
+        ]),
         turnToPage(route) {
+            
         },
         handleCollapsedChange(state) {
             console.log(state)
             this.collapsed = state
         }
+    },
+
+    mounted() {
+        this.setBreadCrumb(this.$route)
     }
 }
 </script>

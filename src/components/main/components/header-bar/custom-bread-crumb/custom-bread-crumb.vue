@@ -3,7 +3,7 @@
         <Breadcrumb :style="{ fontSize: `${fontSize}px` }">
             <BreadcrumbItem v-for="item in list" :to="item.to" :key="`bread-crumb-${item.name}`">
                 <common-icon style="margin-right: 4px;" :type="item.icon || ''" />
-                   1111
+                {{ showTitle(item) }}
             </BreadcrumbItem>
         </Breadcrumb>
     </div>
@@ -12,6 +12,7 @@
 <script>
 import CommonIcon from '@/components/common-icon'
 import './custom-bread-crumb.less'
+import { showTitle } from '@/libs/util'
 
 export default {
 
@@ -32,6 +33,11 @@ export default {
             type: Boolean,
             default: false
         }
+    },
+    methods: {
+        showTitle(item) {
+            return showTitle(item, this)
+        },
     }
 }
 

@@ -50,7 +50,7 @@ export default {
                     commit('setUserCode', data.userCode)
                     commit('setUserName', data.userName)
                     setMenuListInLocalstorage([...data.menuList])
-                    const defaultRoute = data.menuList[0].url
+                    const defaultRoute = data.menuList[0].name
                     resolve(defaultRoute)
                 }).catch(err => {
                 
