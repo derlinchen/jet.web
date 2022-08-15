@@ -15,7 +15,7 @@ export default {
     },
     mutations: {
         setBreadCrumb(state, route) {
-            state.breadCrumbList = getBreadCrumbList(route, state.homeRoute)
+            state.breadCrumbList = getBreadCrumbList(route)
         }
     }
 }
