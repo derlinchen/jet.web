@@ -98,7 +98,7 @@ export default {
                 query
             })
         },
-        
+
         handleCollapsedChange(state) {
             // 处理折叠逻辑
             this.collapsed = state
@@ -107,7 +107,6 @@ export default {
 
      watch: {
         '$route' (newRoute) {
-            console.log(newRoute)
             this.setBreadCrumb(newRoute)
         }
      },
