@@ -92,7 +92,6 @@ export default {
                 params = route.params
                 query = route.query
             }
-            console.log(name)
             this.$router.push({
                 name,
                 params,
@@ -103,6 +102,13 @@ export default {
             this.collapsed = state
         }
     },
+
+     watch: {
+        '$route' (newRoute) {
+            console.log(newRoute)
+            this.setBreadCrumb(newRoute)
+        }
+     },
 
     mounted() {
         this.setBreadCrumb(this.$route)

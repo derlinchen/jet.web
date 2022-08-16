@@ -20,8 +20,7 @@ export default [
                 path: '/home',
                 name: 'home',
                 meta: {
-                    title: '首页',
-                    icon: 'md-home'
+                    title: '首页'
                 },
                 component: () => import('@/views/home')
             }
@@ -30,14 +29,23 @@ export default [
         path: '/system',
         name: 'system',
         component: Main,
+        meta: {
+            title: '系统管理'
+        },
         children: [
             {
                 path: '/user',
                 name: 'user',
+                meta: {
+                    title: '用户管理'
+                },
                 component: () => import('@/views/system/user/user.vue')
             }, {
                 path: '/menu',
                 name: 'menu',
+                meta: {
+                    title: '菜单管理'
+                },
                 component: () => import('@/views/system/menu/menu.vue')
             }
         ]
