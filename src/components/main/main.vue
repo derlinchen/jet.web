@@ -82,7 +82,7 @@ export default {
         ]),
         
         turnToPage(route) {
-            
+            console.log(route)
         },
         handleCollapsedChange(state) {
             this.collapsed = state

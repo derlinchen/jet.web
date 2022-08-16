@@ -53,6 +53,12 @@ export default {
         },
     },
 
+    methods: {
+        handleSelect (name) {
+            // 调用父级组件的方法
+            this.$emit('on-select', name)
+        },
+    },
     computed: {
         textColor() {
             return this.theme === 'dark' ? '#fff' : '#495060'
