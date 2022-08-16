@@ -76,11 +76,20 @@ export default {
         userAvatar() {
             return 'https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png'
         },
+        tagNavList() {
+            return this.$store.state.app.tagNavList
+        },
+        cacheList() {
+            const list = ['ParentView', ...this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)).map(item => item.name) : []]
+            return list
+        },
+
     },
 
     methods: {
         ...mapMutations([
             'setBreadCrumb',
+            'addTag',
         ]),
 
         turnToPage(route) {
@@ -105,13 +114,22 @@ export default {
         }
     },
 
-     watch: {
-        '$route' (newRoute) {
+    watch: {
+        '$route'(newRoute) {
+            const { name, query, params, meta } = newRoute
+            this.addTag({
+                route: { name, query, params, meta },
+                type: 'push'
+            })
             this.setBreadCrumb(newRoute)
         }
-     },
+    },
 
     mounted() {
+        const { name, params, query, meta } = this.$route
+        this.addTag({
+            route: { name, params, query, meta }
+        })
         this.setBreadCrumb(this.$route)
     }
 }

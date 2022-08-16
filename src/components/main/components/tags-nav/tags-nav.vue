@@ -31,14 +31,19 @@
             </Button>
         </div>
 
+
         <div class="scroll-outer" ref="scrollOuter" @DOMMouseScroll="handlescroll" @mousewheel="handlescroll">
             <div ref="scrollBody" class="scroll-body" :style="{ left: tagBodyLeft + 'px' }">
+
                 <transition-group name="taglist-moving-animation">
-                    <Tag type="dot" v-for="(item, index) in list" ref="tagsPageOpened" :key="`tag-nav-${index}`"
+                    <Tag type="dot" v-for="(item, index) in list">
+                        {{ showTitleInside(item) }}
+                    </Tag>
+                    <!-- <Tag type="dot" v-for="(item, index) in list" ref="tagsPageOpened" :key="`tag-nav-${index}`"
                         :name="item.name" :data-route-item="item" @on-close="handleClose(item)"
                         @click.native="handleClick(item)" :closable="item.name !== $config.homeName"
                         :color="isCurrentTag(item) ? 'primary' : 'default'"
-                        @contextmenu.prevent.native="contextMenu(item, $event)">{{ showTitleInside(item) }}</Tag>
+                        @contextmenu.prevent.native="contextMenu(item, $event)">{{ showTitleInside(item) }}</Tag> -->
                 </transition-group>
             </div>
         </div>
@@ -46,10 +51,27 @@
 </template>
     
 <script>
+import { showTitle } from '@/libs/util'
 
 export default {
     name: 'TagsNav',
-
+    props: {
+        value: Object,
+        list: {
+            type: Array,
+            default() {
+                return []
+            }
+        }
+    },
+    methods: {
+        showTitleInside(item) {
+            return showTitle(item, this)
+        },
+    },
+    mounted() {
+        console.log(this.list)
+    }
 }
 
 </script>

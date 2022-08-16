@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import config from '@/config'
-
+import { objEqual } from '@/libs/tools'
 
 export const TOKEN_KEY = 'token'
 const { cookieExpires } = config
@@ -75,5 +75,45 @@ export const findNodeUpperByClasses = (ele, classes) => {
   }
 }
 
+export const getRouteTitleHandled = (route) => {
+  let router = { ...route }
+  let meta = { ...route.meta }
+  let title = ''
+  if (meta.title) {
+    if (typeof meta.title === 'function') {
+      meta.__titleIsFunction__ = true
+      title = meta.title(router)
+    } else title = meta.title
+  }
+  meta.title = title
+  router.meta = meta
+  return router
+}
 
+export const routeHasExist = (tagNavList, routeItem) => {
+  let len = tagNavList.length
+  let res = false
+  doCustomTimes(len, (index) => {
+    if (routeEqual(tagNavList[index], routeItem)) res = true
+  })
+  return res
+}
 
+export const doCustomTimes = (times, callback) => {
+  let i = -1
+  while (++i < times) {
+    callback(i)
+  }
+}
+
+export const routeEqual = (route1, route2) => {
+  const params1 = route1.params || {}
+  const params2 = route2.params || {}
+  const query1 = route1.query || {}
+  const query2 = route2.query || {}
+  return (route1.name === route2.name) && objEqual(params1, params2) && objEqual(query1, query2)
+}
+
+export const setTagNavListInLocalstorage = list => {
+  localStorage.tagNaveList = JSON.stringify(list)
+}
