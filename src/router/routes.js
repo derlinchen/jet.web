@@ -32,12 +32,13 @@ export default [
         component: Main,
         children: [
             {
-                path: 'user',
+                path: '/user',
                 name: 'user',
-                // component: () => import('@/view/components/tree-select/index.vue')
+                component: () => import('@/views/system/user/user.vue')
             }, {
-                path: 'menu',
+                path: '/menu',
                 name: 'menu',
+                component: () => import('@/views/system/menu/menu.vue')
             }
         ]
     }

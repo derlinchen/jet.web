@@ -1,7 +1,9 @@
 <template>
     <Layout style="height: 100%" class="main">
-        <Sider hide-trigger collapsible :width="256" :collapsed-width="64" v-model="collapsed" class="left-sider" :style="{ overflow: 'hidden' }">
-            <side-menu accordion ref="sideMenu" :active-name="$route.name" :collapsed="collapsed" @on-select="turnToPage" :menu-list="menuList">
+        <Sider hide-trigger collapsible :width="256" :collapsed-width="64" v-model="collapsed" class="left-sider"
+            :style="{ overflow: 'hidden' }">
+            <side-menu accordion ref="sideMenu" :active-name="$route.name" :collapsed="collapsed"
+                @on-select="turnToPage" :menu-list="menuList">
                 <div class="logo-con">
                     <img v-show="!collapsed" :src="maxLogo" key="max-logo" />
                     <img v-show="collapsed" :src="minLogo" key="min-logo" />
@@ -12,15 +14,15 @@
         <Layout>
             <Header class="header-con">
                 <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange">
-                    <user :message-unread-count="unreadCount" :user-avatar="userAvatar"/>
-                    <fullscreen v-model="isFullscreen" style="margin-right: 10px;"/>
+                    <user :message-unread-count="unreadCount" :user-avatar="userAvatar" />
+                    <fullscreen v-model="isFullscreen" style="margin-right: 10px;" />
                 </header-bar>
             </Header>
 
             <Content class="main-content-con">
                 <Layout class="main-layout-con">
                     <div class="tag-nav-wrapper">
-                        <tags-nav :value="$route" @input="handleClick" :list="tagNavList" @on-close="handleCloseTag"/>
+                        <tags-nav :value="$route" @input="handleClick" :list="tagNavList" @on-close="handleCloseTag" />
                     </div>
                     <Content class="content-wrapper">
                         <keep-alive :include="cacheList">
@@ -71,7 +73,7 @@ export default {
         menuList() {
             return getMenuListFromLocalstorage()
         },
-        userAvatar () {
+        userAvatar() {
             return 'https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png'
         },
     },
@@ -80,9 +82,22 @@ export default {
         ...mapMutations([
             'setBreadCrumb',
         ]),
-        
+
         turnToPage(route) {
-            console.log(route)
+            let { name, params, query } = {}
+            if (typeof route === 'string') {
+                name = route
+            } else {
+                name = route.name
+                params = route.params
+                query = route.query
+            }
+            console.log(name)
+            this.$router.push({
+                name,
+                params,
+                query
+            })
         },
         handleCollapsedChange(state) {
             this.collapsed = state
