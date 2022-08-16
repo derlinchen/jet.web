@@ -1,5 +1,6 @@
 import {
-    getBreadCrumbList
+    getBreadCrumbList,
+    getRouteTitleHandled
 } from '@/libs/util'
 
 export default {
