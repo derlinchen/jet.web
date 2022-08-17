@@ -94,7 +94,6 @@ export default {
             this.handleScroll(delta)
         },
         handleScroll(offset) {
-            console.log(this.$refs.scrollOuter.offsetWidth)
             const outerWidth = this.$refs.scrollOuter.offsetWidth
             const bodyWidth = this.$refs.scrollBody.offsetWidth
             if (offset > 0) {
