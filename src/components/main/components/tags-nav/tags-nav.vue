@@ -119,9 +119,6 @@ export default {
         handleClick(item) {
             this.$emit('input', item)
         },
-    },
-    mounted() {
-        console.log(this.list)
     }
 }
 
