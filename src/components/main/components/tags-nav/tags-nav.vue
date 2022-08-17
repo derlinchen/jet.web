@@ -37,7 +37,8 @@
 
                 <transition-group name="taglist-moving-animation">
                     <Tag type="dot" closable v-for="(item, index) in list" :key="`tag-nav-${index}`" :name="item.name"
-                        :data-route-item="item" :color="isCurrentTag(item) ? 'primary' : 'default'">
+                        :data-route-item="item" :color="isCurrentTag(item) ? 'primary' : 'default'"
+                        @click.native="handleClick(item)">
                         {{ showTitleInside(item) }}
                     </Tag>
                     <!-- <Tag type="dot" v-for="(item, index) in list" ref="tagsPageOpened" :key="`tag-nav-${index}`"
@@ -109,6 +110,9 @@ export default {
                     this.tagBodyLeft = 0
                 }
             }
+        },
+        handleClick(item) {
+            this.$emit('input', item)
         },
     },
     mounted() {

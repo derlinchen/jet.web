@@ -111,6 +111,9 @@ export default {
         handleCollapsedChange(state) {
             // 处理折叠逻辑
             this.collapsed = state
+        },
+        handleClick(item) {
+            this.turnToPage(item)
         }
     },
 
