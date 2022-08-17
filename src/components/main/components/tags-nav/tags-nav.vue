@@ -36,7 +36,8 @@
             <div ref="scrollBody" class="scroll-body" :style="{ left: tagBodyLeft + 'px' }">
 
                 <transition-group name="taglist-moving-animation">
-                    <Tag type="dot" v-for="(item, index) in list">
+                    <Tag type="dot" closable v-for="(item, index) in list" :key="`tag-nav-${index}`" :name="item.name"
+                        :data-route-item="item" :color="isCurrentTag(item) ? 'primary' : 'default'">
                         {{ showTitleInside(item) }}
                     </Tag>
                     <!-- <Tag type="dot" v-for="(item, index) in list" ref="tagsPageOpened" :key="`tag-nav-${index}`"
@@ -51,7 +52,7 @@
 </template>
     
 <script>
-import { showTitle } from '@/libs/util'
+import { showTitle, routeEqual } from '@/libs/util'
 
 export default {
     name: 'TagsNav',
@@ -64,9 +65,18 @@ export default {
             }
         }
     },
+    computed: {
+        currentRouteObj() {
+            const { name, params, query } = this.value
+            return { name, params, query }
+        }
+    },
     methods: {
         showTitleInside(item) {
             return showTitle(item, this)
+        },
+        isCurrentTag(item) {
+            return routeEqual(this.currentRouteObj, item)
         },
     },
     mounted() {
