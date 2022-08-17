@@ -65,6 +65,12 @@ export default {
             }
         }
     },
+
+    data() {
+        return {
+            tagBodyLeft: 0
+        }
+    },
     computed: {
         currentRouteObj() {
             const { name, params, query } = this.value
@@ -77,6 +83,33 @@ export default {
         },
         isCurrentTag(item) {
             return routeEqual(this.currentRouteObj, item)
+        },
+
+        handlescroll(e) {
+            var type = e.type
+            let delta = 0
+            if (type === 'DOMMouseScroll' || type === 'mousewheel') {
+                delta = (e.wheelDelta) ? e.wheelDelta : -(e.detail || 0) * 40
+            }
+            this.handleScroll(delta)
+        },
+        handleScroll(offset) {
+            console.log(this.$refs.scrollOuter.offsetWidth)
+            const outerWidth = this.$refs.scrollOuter.offsetWidth
+            const bodyWidth = this.$refs.scrollBody.offsetWidth
+            if (offset > 0) {
+                this.tagBodyLeft = Math.min(0, this.tagBodyLeft + offset)
+            } else {
+                if (outerWidth < bodyWidth) {
+                    if (this.tagBodyLeft < -(bodyWidth - outerWidth)) {
+                        this.tagBodyLeft = this.tagBodyLeft
+                    } else {
+                        this.tagBodyLeft = Math.max(this.tagBodyLeft + offset, outerWidth - bodyWidth)
+                    }
+                } else {
+                    this.tagBodyLeft = 0
+                }
+            }
         },
     },
     mounted() {
