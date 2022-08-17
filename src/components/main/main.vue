@@ -54,31 +54,43 @@ import './main.less'
 export default {
     name: 'Main',
     components: {
+        // 菜单栏
         SideMenu,
+        // 系统头部
         HeaderBar,
+        // 是否全屏
         Fullscreen,
+        // 用户信息
         User,
+        // 点击菜单tag
         TagsNav
     },
 
     data() {
         return {
+            // 是否折叠
             collapsed: false,
+            // 折叠时logo
             minLogo,
+            // 非折叠时logo
             maxLogo,
         }
     },
 
     computed: {
+        // 从localstorage中获取菜单信息
         menuList() {
             return getMenuListFromLocalstorage()
         },
+        // 获取登录后个人头像
         userAvatar() {
             return 'https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png'
         },
+        // 获取菜单tag
         tagNavList() {
             return this.$store.state.app.tagNavList
         },
+        // 对菜单list进行缓存
         cacheList() {
             const list = ['ParentView', ...this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)).map(item => item.name) : []]
             return list
@@ -88,51 +100,70 @@ export default {
 
     methods: {
         ...mapMutations([
+            // 设置面包屑
             'setBreadCrumb',
+            // 添加tag
             'addTag',
         ]),
 
+        // 路由跳转
         turnToPage(route) {
+            // 定义name, params, query
             let { name, params, query } = {}
+
+            // 判断当前跳转是否为路由直接跳转
+            // 直接跳转
             if (typeof route === 'string') {
                 name = route
             } else {
+                // 带参跳转
                 name = route.name
                 params = route.params
                 query = route.query
             }
+
+            // 执行路由跳转
             this.$router.push({
                 name,
                 params,
                 query
             })
         },
-
+        // 折叠处理
         handleCollapsedChange(state) {
             // 处理折叠逻辑
             this.collapsed = state
         },
+
+        // 页面tag点击时进行页面跳转
         handleClick(item) {
+            // 页面跳转
             this.turnToPage(item)
         }
     },
 
     watch: {
+        // 监听路由变化
         '$route'(newRoute) {
+            // 获取新路由信息
             const { name, query, params, meta } = newRoute
+            // 将路由添加到tag
             this.addTag({
                 route: { name, query, params, meta },
                 type: 'push'
             })
+            // 设置面包屑
             this.setBreadCrumb(newRoute)
         }
     },
 
     mounted() {
+        // 页面渲染后，将页面加入tag，类似tab页
         const { name, params, query, meta } = this.$route
         this.addTag({
             route: { name, params, query, meta }
         })
+        // 设置面包屑
         this.setBreadCrumb(this.$route)
     }
 }
