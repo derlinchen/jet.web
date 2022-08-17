@@ -14,7 +14,7 @@
         <Layout>
             <Header class="header-con">
                 <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange">
-                    <user :message-unread-count="unreadCount" :user-avatar="userAvatar" />
+                    <user :user-avatar="userAvatar" />
                     <fullscreen v-model="isFullscreen" style="margin-right: 10px;" />
                 </header-bar>
             </Header>
@@ -28,7 +28,6 @@
                         <keep-alive :include="cacheList">
                             <router-view />
                         </keep-alive>
-                        <ABackTop :height="100" :bottom="80" :right="50" container=".content-wrapper"></ABackTop>
                     </Content>
                 </Layout>
             </Content>
@@ -74,6 +73,8 @@ export default {
             minLogo,
             // 非折叠时logo
             maxLogo,
+            // 是否全屏
+            isFullscreen: false
         }
     },
 
@@ -94,7 +95,7 @@ export default {
         cacheList() {
             const list = ['ParentView', ...this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)).map(item => item.name) : []]
             return list
-        },
+        }
 
     },
 
