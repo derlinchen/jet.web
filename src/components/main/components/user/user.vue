@@ -1,9 +1,12 @@
 <template>
   <div class="user-avatar-dropdown">
+    <!-- 个人中心 -->
     <Dropdown @on-click="handleClick">
+      <!-- 头像 -->
       <Avatar :src="userAvatar" />
       <Icon :size="18" type="md-arrow-dropdown"></Icon>
       <template v-slot:list>
+        <!-- 下拉选项 -->
         <DropdownMenu>
           <DropdownItem name="logout">退出登录</DropdownItem>
         </DropdownMenu>
@@ -24,9 +27,12 @@ export default {
     }
   },
   methods: {
+
     ...mapActions([
       'handleLogOut'
     ]),
+
+    // 退出登录
     logout() {
       // this.handleLogOut().then(() => {
       //   this.$router.push({
