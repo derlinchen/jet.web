@@ -1,4 +1,5 @@
 <template>
+  <!-- 登录页 -->
   <Form ref="loginForm" :model="form" :rules="rules" @keydown.enter.native="handleSubmit">
     <FormItem prop="userCode">
       <Input v-model="form.userCode" placeholder="请输入用户名">
