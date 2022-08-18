@@ -34,14 +34,14 @@ export default [
         },
         children: [
             {
-                path: '/system/user',
+                path: 'user',
                 name: 'user',
                 meta: {
                     title: '用户管理'
                 },
                 component: () => import('@/views/system/user/user.vue')
             }, {
-                path: '/system/menu',
+                path: 'menu',
                 name: 'menu',
                 meta: {
                     title: '菜单管理'
