@@ -38,7 +38,7 @@
                 <transition-group name="taglist-moving-animation">
                     <Tag type="dot" closable v-for="(item, index) in list" :key="`tag-nav-${index}`" :name="item.name"
                         :data-route-item="item" :color="isCurrentTag(item) ? 'primary' : 'default'"
-                        @click.native="handleClick(item)">
+                        @click.native="handleClick(item)" @on-close="handleClose(item)">
                         {{ showTitleInside(item) }}
                     </Tag>
                     <!-- <Tag type="dot" v-for="(item, index) in list" ref="tagsPageOpened" :key="`tag-nav-${index}`"
@@ -78,19 +78,22 @@ export default {
         }
     },
     computed: {
+        // 获取当前路由信息
         currentRouteObj() {
             const { name, params, query } = this.value
             return { name, params, query }
         }
     },
     methods: {
+        // 展示tag标题信息
         showTitleInside(item) {
             return showTitle(item, this)
         },
+        // 判断是否为当前tag
         isCurrentTag(item) {
             return routeEqual(this.currentRouteObj, item)
         },
-
+        // 对tag进行滚动鼠标操作
         handlescroll(e) {
             var type = e.type
             let delta = 0
@@ -99,6 +102,7 @@ export default {
             }
             this.handleScroll(delta)
         },
+        // 对tag进行滚动操作
         handleScroll(offset) {
             const outerWidth = this.$refs.scrollOuter.offsetWidth
             const bodyWidth = this.$refs.scrollBody.offsetWidth
@@ -116,9 +120,18 @@ export default {
                 }
             }
         },
+        // 点击tag进行菜单切换
         handleClick(item) {
             this.$emit('input', item)
         },
+        // 对tag进行关闭操作
+        handleClose(current) {
+            this.close(current)
+        },
+        close(route) {
+            let res = this.list.filter(item => !routeEqual(route, item))
+            this.$emit('on-close', res, undefined, route)
+        }
     }
 }
 

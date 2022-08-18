@@ -45,7 +45,7 @@ import HeaderBar from './components/header-bar'
 import User from './components/user'
 import Fullscreen from './components/fullscreen'
 import TagsNav from './components/tags-nav'
-import { getMenuListFromLocalstorage } from '@/libs/util'
+import { getMenuListFromLocalstorage, routeEqual } from '@/libs/util'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
 import './main.less'
@@ -105,6 +105,10 @@ export default {
             'setBreadCrumb',
             // 添加tag
             'addTag',
+            // 关闭tag
+            'closeTag',
+            // 设置tag列表
+            'setTagNavList',
         ]),
 
         // 路由跳转
@@ -140,6 +144,20 @@ export default {
         handleClick(item) {
             // 页面跳转
             this.turnToPage(item)
+        },
+
+        // 关闭页面tag
+        handleCloseTag(res, type, route) {
+            if (type !== 'others') {
+                if (type === 'all') {
+                    this.turnToPage(this.$config.homeName)
+                } else {
+                    if (routeEqual(this.$route, route)) {
+                        this.closeTag(route)
+                    }
+                }
+            }
+            this.setTagNavList(res)
         }
     },
 
@@ -148,22 +166,27 @@ export default {
         '$route'(newRoute) {
             // 获取新路由信息
             const { name, query, params, meta } = newRoute
-            // 将路由添加到tag
-            this.addTag({
-                route: { name, query, params, meta },
-                type: 'push'
-            })
+            if (name !== 'index') {
+                // 将路由添加到tag
+                this.addTag({
+                    route: { name, query, params, meta },
+                    type: 'push'
+                })
+            }
             // 设置面包屑
             this.setBreadCrumb(newRoute)
+
         }
     },
 
     mounted() {
         // 页面渲染后，将页面加入tag，类似tab页
         const { name, params, query, meta } = this.$route
-        this.addTag({
-            route: { name, params, query, meta }
-        })
+        if (name !== 'index') {
+            this.addTag({
+                route: { name, params, query, meta }
+            })
+        }
         // 设置面包屑
         this.setBreadCrumb(this.$route)
     }

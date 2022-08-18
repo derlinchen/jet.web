@@ -6,6 +6,22 @@ export default [
         path: '/login',
         name: 'login',
         component: () => import('@/views/login/login.vue')
+    },{
+        path: '/',
+        name: '_index',
+        redirect: '/index',
+        component: Main,
+        meta: {
+            hideInMenu: true,
+            notCache: true
+        },
+        children: [
+            {
+                path: '/index',
+                name: 'index',
+                component: () => import('@/views/index')
+            }
+        ]
     }, {
         path: '/',
         name: '_home',

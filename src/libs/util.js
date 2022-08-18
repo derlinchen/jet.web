@@ -117,3 +117,39 @@ export const routeEqual = (route1, route2) => {
 export const setTagNavListInLocalstorage = list => {
   localStorage.tagNaveList = JSON.stringify(list)
 }
+
+export const getTagNavListFromLocalstorage = () => {
+  const list = localStorage.tagNaveList
+  return list ? JSON.parse(list) : []
+}
+
+
+export const getHomeRoute = (routers, homeName = 'home') => {
+  let i = -1
+  let len = routers.length
+  let homeRoute = {}
+  while (++i < len) {
+    let item = routers[i]
+    if (item.children && item.children.length) {
+      let res = getHomeRoute(item.children, homeName)
+      if (res.name) return res
+    } else {
+      if (item.name === homeName) homeRoute = item
+    }
+  }
+  return homeRoute
+}
+
+export const getNextRoute = (list, route) => {
+  let res = {}
+  if (list.length === 1) {
+    res.name = 'index'
+    // res = getHomeRoute(list)
+  } else {
+    const index = list.findIndex(item => routeEqual(item, route))
+    if (index === list.length - 1) res = list[list.length - 2]
+    else res = list[index + 1]
+  }
+  return res
+}
+

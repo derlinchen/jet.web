@@ -3,8 +3,6 @@ const path = require('path')
 
 const { NODE_ENV, VUE_APP_TITLE = '', VUE_APP_API } = process.env
 
-console.log(process.env)
-
 const config = {
   transpileDependencies: false,
   productionSourceMap: NODE_ENV === 'production',

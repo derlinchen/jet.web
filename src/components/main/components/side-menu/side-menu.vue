@@ -63,12 +63,7 @@ export default {
         textColor() {
             return this.theme === 'dark' ? '#fff' : '#495060'
         }
-    },
-
-    mounted() {
-        // console.log(collapsed)
     }
-
 }
 </script>
 
