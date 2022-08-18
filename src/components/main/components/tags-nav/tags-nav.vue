@@ -38,14 +38,9 @@
                 <transition-group name="taglist-moving-animation">
                     <Tag type="dot" closable v-for="(item, index) in list" :key="`tag-nav-${index}`" :name="item.name"
                         :data-route-item="item" :color="isCurrentTag(item) ? 'primary' : 'default'"
-                        @click.native="handleClick(item)" @on-close="handleClose(item)">
+                        @click.native="handleClick(item)" @on-close="handleClose(item)" ref="tagsPageOpened">
                         {{ showTitleInside(item) }}
                     </Tag>
-                    <!-- <Tag type="dot" v-for="(item, index) in list" ref="tagsPageOpened" :key="`tag-nav-${index}`"
-                        :name="item.name" :data-route-item="item" @on-close="handleClose(item)"
-                        @click.native="handleClick(item)" :closable="item.name !== $config.homeName"
-                        :color="isCurrentTag(item) ? 'primary' : 'default'"
-                        @contextmenu.prevent.native="contextMenu(item, $event)">{{ showTitleInside(item) }}</Tag> -->
                 </transition-group>
             </div>
         </div>
@@ -131,7 +126,49 @@ export default {
         close(route) {
             let res = this.list.filter(item => !routeEqual(route, item))
             this.$emit('on-close', res, undefined, route)
-        }
+        },
+        handleTagsOption(type) {
+            if (type.includes('all')) {
+                // 关闭所有，除了index
+                console.log(this.$config)
+                let res = this.list.filter(item => item.name === this.$config.indexName)
+                this.$emit('on-close', res, 'all')
+            } else if (type.includes('others')) {
+                // 关闭除当前页和home页的其他页
+                let res = this.list.filter(item => routeEqual(this.currentRouteObj, item) || item.name === this.$config.indexName)
+                this.$emit('on-close', res, 'others', this.currentRouteObj)
+                setTimeout(() => {
+                    this.getTagElementByRoute(this.currentRouteObj)
+                }, 100)
+            }
+        },
+        getTagElementByRoute(route) {
+            this.$nextTick(() => {
+                this.refsTag = this.$refs.tagsPageOpened
+                this.refsTag.forEach((item, index) => {
+                    if (routeEqual(route, item.$attrs['data-route-item'])) {
+                        let tag = this.refsTag[index].$el
+                        this.moveToView(tag)
+                    }
+                })
+            })
+        },
+        moveToView(tag) {
+            const outerWidth = this.$refs.scrollOuter.offsetWidth
+            const bodyWidth = this.$refs.scrollBody.offsetWidth
+            if (bodyWidth < outerWidth) {
+                this.tagBodyLeft = 0
+            } else if (tag.offsetLeft < -this.tagBodyLeft) {
+                // 标签在可视区域左侧
+                this.tagBodyLeft = -tag.offsetLeft + this.outerPadding
+            } else if (tag.offsetLeft > -this.tagBodyLeft && tag.offsetLeft + tag.offsetWidth < -this.tagBodyLeft + outerWidth) {
+                // 标签在可视区域
+                this.tagBodyLeft = Math.min(0, outerWidth - tag.offsetWidth - tag.offsetLeft - this.outerPadding)
+            } else {
+                // 标签在可视区域右侧
+                this.tagBodyLeft = -(tag.offsetLeft - (outerWidth - this.outerPadding - tag.offsetWidth))
+            }
+        },
     }
 }
 
