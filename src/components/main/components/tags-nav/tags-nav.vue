@@ -1,41 +1,49 @@
 <template>
     <div class="tags-nav">
+        <!-- 关闭按钮 -->
         <div class="close-con">
+            <!-- 关闭出发方法 -->
             <Dropdown transfer @on-click="handleTagsOption" style="margin-top:7px;">
+                <!-- 关闭按钮 -->
                 <Button size="small" type="text">
                     <Icon :size="18" type="ios-close-circle-outline" />
                 </Button>
                 <template v-slot:list>
+                    <!-- 关闭下拉选项 -->
                     <DropdownMenu>
                         <DropdownItem name="close-all">关闭所有</DropdownItem>
                         <DropdownItem name="close-others">关闭其他</DropdownItem>
                     </DropdownMenu>
                 </template>
-
             </Dropdown>
         </div>
 
+        <!-- 右击选项 -->
         <ul v-show="visible" :style="{ left: contextMenuLeft + 'px', top: contextMenuTop + 'px' }" class="contextmenu">
             <li v-for="(item, key) of menuList" @click="handleTagsOption(key)" :key="key">{{ item }}</li>
         </ul>
 
+        <!-- 左滚动按钮 -->
         <div class="btn-con left-btn">
             <Button type="text" @click="handleScroll(240)">
                 <Icon :size="18" type="ios-arrow-back" />
             </Button>
         </div>
 
+        <!-- 右滚动按钮 -->
         <div class="btn-con right-btn">
             <Button type="text" @click="handleScroll(-240)">
                 <Icon :size="18" type="ios-arrow-forward" />
             </Button>
         </div>
 
-
+        <!-- tag滚动功能 -->
         <div class="scroll-outer" ref="scrollOuter" @DOMMouseScroll="handlescroll" @mousewheel="handlescroll">
+            <!-- 滚动控件 -->
             <div ref="scrollBody" class="scroll-body" :style="{ left: tagBodyLeft + 'px' }">
-
+                <!-- 滚动动画 -->
                 <transition-group name="taglist-moving-animation">
+                    <!-- tag菜单 -->
                     <Tag type="dot" closable v-for="(item, index) in list" :key="`tag-nav-${index}`" :name="item.name"
                         :data-route-item="item" :color="isCurrentTag(item) ? 'primary' : 'default'"
                         @click.native="handleClick(item)" @on-close="handleClose(item)" ref="tagsPageOpened"
@@ -75,6 +83,7 @@ export default {
             }
         }
     },
+
     computed: {
         // 获取当前路由信息
         currentRouteObj() {
@@ -82,15 +91,18 @@ export default {
             return { name, params, query }
         }
     },
+    
     methods: {
         // 展示tag标题信息
         showTitleInside(item) {
             return showTitle(item, this)
         },
+
         // 判断是否为当前tag
         isCurrentTag(item) {
             return routeEqual(this.currentRouteObj, item)
         },
+
         // 对tag进行滚动鼠标操作
         handlescroll(e) {
             var type = e.type
@@ -100,6 +112,7 @@ export default {
             }
             this.handleScroll(delta)
         },
+
         // 对tag进行滚动操作
         handleScroll(offset) {
             const outerWidth = this.$refs.scrollOuter.offsetWidth
@@ -118,18 +131,24 @@ export default {
                 }
             }
         },
+
         // 点击tag进行菜单切换
         handleClick(item) {
             this.$emit('input', item)
         },
+
         // 对tag进行关闭操作
         handleClose(current) {
             this.close(current)
         },
+
+        // 关闭tag
         close(route) {
             let res = this.list.filter(item => !routeEqual(route, item))
             this.$emit('on-close', res, undefined, route)
         },
+
+        // 右击tag
         handleTagsOption(type) {
             if (type.includes('all')) {
                 // 关闭所有，除了index
@@ -144,6 +163,8 @@ export default {
                 }, 100)
             }
         },
+
+        // 根据路由获取tag元素
         getTagElementByRoute(route) {
             this.$nextTick(() => {
                 this.refsTag = this.$refs.tagsPageOpened
@@ -155,6 +176,8 @@ export default {
                 })
             })
         },
+
+        // 移入视图
         moveToView(tag) {
             const outerWidth = this.$refs.scrollOuter.offsetWidth
             const bodyWidth = this.$refs.scrollBody.offsetWidth
@@ -171,6 +194,8 @@ export default {
                 this.tagBodyLeft = -(tag.offsetLeft - (outerWidth - this.outerPadding - tag.offsetWidth))
             }
         },
+
+        // 右击菜单
         contextMenu(item, e) {
             if (item.name === this.$config.homeName) {
                 return
@@ -180,10 +205,14 @@ export default {
             this.contextMenuLeft = e.clientX - offsetLeft + 10
             this.contextMenuTop = e.clientY - 64
         },
+
+        // 关闭右击菜单
         closeMenu() {
             this.visible = false
         }
     },
+
+    // 监听
     watch: {
         '$route'(to) {
             this.getTagElementByRoute(to)
@@ -195,7 +224,7 @@ export default {
                 document.body.removeEventListener('click', this.closeMenu)
             }
         }
-    },
+    }
 }
 
 </script>
