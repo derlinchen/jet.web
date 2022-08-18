@@ -50,19 +50,19 @@ export default [
         },
         children: [
             {
-                path: 'user',
-                name: 'user',
+                path: 'userManage',
+                name: 'userManage',
                 meta: {
                     title: '用户管理'
                 },
-                component: () => import('@/views/system/user/user.vue')
+                component: () => import('@/views/system/user/userManage.vue')
             }, {
-                path: 'menu',
-                name: 'menu',
+                path: 'menuManage',
+                name: 'menuManage',
                 meta: {
                     title: '菜单管理'
                 },
-                component: () => import('@/views/system/menu/menu.vue')
+                component: () => import('@/views/system/menu/menuManage.vue')
             }
         ]
     }

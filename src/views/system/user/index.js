@@ -1,2 +1,2 @@
-import user from './user.vue'
-export default user
+import userManage from './userManage.vue'
+export default userManage

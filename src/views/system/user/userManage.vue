@@ -8,9 +8,6 @@
     
 <script>
 export default {
-    name: 'user',
-    mounted() {
-
-    }
+    name: 'userManage'
 }
 </script>
