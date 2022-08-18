@@ -48,6 +48,8 @@ import TagsNav from './components/tags-nav'
 import { getMenuListFromLocalstorage, routeEqual } from '@/libs/util'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
+import config from '@/config'
+
 import './main.less'
 
 export default {
@@ -150,7 +152,7 @@ export default {
         handleCloseTag(res, type, route) {
             if (type !== 'others') {
                 if (type === 'all') {
-                    this.turnToPage(this.$config.homeName)
+                    this.turnToPage(config.indexName)
                 } else {
                     if (routeEqual(this.$route, route)) {
                         this.closeTag(route)
@@ -166,7 +168,7 @@ export default {
         '$route'(newRoute) {
             // 获取新路由信息
             const { name, query, params, meta } = newRoute
-            if (name !== 'index') {
+            if (name !== config.indexName) {
                 // 将路由添加到tag
                 this.addTag({
                     route: { name, query, params, meta },
@@ -182,7 +184,7 @@ export default {
     mounted() {
         // 页面渲染后，将页面加入tag，类似tab页
         const { name, params, query, meta } = this.$route
-        if (name !== 'index') {
+        if (name !== config.indexName) {
             this.addTag({
                 route: { name, params, query, meta }
             })

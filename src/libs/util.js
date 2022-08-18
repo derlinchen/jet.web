@@ -3,7 +3,7 @@ import config from '@/config'
 import { objEqual } from '@/libs/tools'
 
 export const TOKEN_KEY = 'token'
-const { cookieExpires } = config
+const { cookieExpires, indexName } = config
 
 export const setToken = (token) => {
   Cookies.set(TOKEN_KEY, token, { expires: cookieExpires || 1 })
@@ -143,8 +143,7 @@ export const getHomeRoute = (routers, homeName = 'home') => {
 export const getNextRoute = (list, route) => {
   let res = {}
   if (list.length === 1) {
-    res.name = 'index'
-    // res = getHomeRoute(list)
+    res.name = indexName
   } else {
     const index = list.findIndex(item => routeEqual(item, route))
     if (index === list.length - 1) res = list[list.length - 2]

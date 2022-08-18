@@ -1,4 +1,5 @@
 export default {
     cookieExpires: 1,
-    homeName: 'home'
+    homeName: 'home',
+    indexName:'index'
 }
