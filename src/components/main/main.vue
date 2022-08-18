@@ -1,30 +1,39 @@
 <template>
     <Layout style="height: 100%" class="main">
+        <!-- 左边区域 -->
         <Sider hide-trigger collapsible :width="256" :collapsed-width="64" v-model="collapsed" class="left-sider"
             :style="{ overflow: 'hidden' }">
+            <!-- 左边菜单 -->
             <side-menu accordion ref="sideMenu" :active-name="$route.name" :collapsed="collapsed"
                 @on-select="turnToPage" :menu-list="menuList">
+                <!-- 系统logo -->
                 <div class="logo-con">
                     <img v-show="!collapsed" :src="maxLogo" key="max-logo" />
                     <img v-show="collapsed" :src="minLogo" key="min-logo" />
                 </div>
             </side-menu>
         </Sider>
-
+        <!-- 右边区域 -->
         <Layout>
+            <!-- 头部 -->
             <Header class="header-con">
                 <header-bar :collapsed="collapsed" @on-coll-change="handleCollapsedChange">
+                    <!-- 个人中心 -->
                     <user :user-avatar="userAvatar" />
+                    <!-- 全屏 -->
                     <fullscreen v-model="isFullscreen" style="margin-right: 10px;" />
                 </header-bar>
             </Header>
-
+            <!-- 内容 -->
             <Content class="main-content-con">
                 <Layout class="main-layout-con">
+                    <!-- tag菜单导航 -->
                     <div class="tag-nav-wrapper">
                         <tags-nav :value="$route" @input="handleClick" :list="tagNavList" @on-close="handleCloseTag" />
                     </div>
+                    <!-- 菜单内容页 -->
                     <Content class="content-wrapper">
+                        <!-- 通过router-view进行路由跳转 -->
                         <router-view v-slot="{ Component }">
                             <keep-alive :include="cacheList">
                                 <component :is="Component" />
@@ -38,7 +47,7 @@
 </template>
 
 <script>
-import { mapMutations, mapActions, mapGetters } from 'vuex'
+import { mapMutations } from 'vuex'
 import SideMenu from './components/side-menu'
 import HeaderBar from './components/header-bar'
 import User from './components/user'
@@ -47,7 +56,6 @@ import TagsNav from './components/tags-nav'
 import { getMenuListFromLocalstorage, routeEqual } from '@/libs/util'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
-import config from '@/config'
 
 import './main.less'
 
@@ -97,7 +105,6 @@ export default {
             const list = ['ParentView', ...this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)).map(item => item.name) : []]
             return list
         }
-
     },
 
     methods: {
@@ -151,7 +158,7 @@ export default {
         handleCloseTag(res, type, route) {
             if (type !== 'others') {
                 if (type === 'all') {
-                    this.turnToPage(config.indexName)
+                    this.turnToPage(this.$config.indexName)
                 } else {
                     if (routeEqual(this.$route, route)) {
                         this.closeTag(route)
@@ -167,7 +174,7 @@ export default {
         '$route'(newRoute) {
             // 获取新路由信息
             const { name, query, params, meta } = newRoute
-            if (name !== config.indexName) {
+            if (name !== this.$config.indexName) {
                 // 将路由添加到tag
                 this.addTag({
                     route: { name, query, params, meta },
@@ -183,7 +190,7 @@ export default {
     mounted() {
         // 页面渲染后，将页面加入tag，类似tab页
         const { name, params, query, meta } = this.$route
-        if (name !== config.indexName) {
+        if (name !== this.$config.indexName) {
             this.addTag({
                 route: { name, params, query, meta }
             })
