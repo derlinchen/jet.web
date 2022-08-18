@@ -1,5 +1,8 @@
 <template>
-  <a @click="handleChange" type="text" :class="['sider-trigger-a', collapsed ? 'collapsed' : '']"><Icon :type="icon" :size="size" /></a>
+  <!-- 菜单折叠功能 -->
+  <a @click="handleChange" type="text" :class="['sider-trigger-a', collapsed ? 'collapsed' : '']">
+    <Icon :type="icon" :size="size" />
+  </a>
 </template>
 <script>
 export default {
@@ -16,7 +19,7 @@ export default {
     }
   },
   methods: {
-    handleChange () {
+    handleChange() {
       this.$emit('on-change', !this.collapsed)
     }
   }

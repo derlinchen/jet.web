@@ -1,6 +1,8 @@
 <template>
+    <!-- 面包屑 -->
     <div class="custom-bread-crumb">
         <Breadcrumb :style="{ fontSize: `${fontSize}px` }">
+            <!-- 面包屑内容 -->
             <BreadcrumbItem v-for="item in list" :to="item.to" :key="`bread-crumb-${item.name}`">
                 <common-icon style="margin-right: 4px;" :type="item.icon || ''" />
                 {{ showTitle(item) }}
@@ -37,7 +39,7 @@ export default {
     methods: {
         showTitle(item) {
             return showTitle(item, this)
-        },
+        }
     }
 }
 
