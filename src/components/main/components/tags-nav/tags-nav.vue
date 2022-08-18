@@ -38,7 +38,8 @@
                 <transition-group name="taglist-moving-animation">
                     <Tag type="dot" closable v-for="(item, index) in list" :key="`tag-nav-${index}`" :name="item.name"
                         :data-route-item="item" :color="isCurrentTag(item) ? 'primary' : 'default'"
-                        @click.native="handleClick(item)" @on-close="handleClose(item)" ref="tagsPageOpened">
+                        @click.native="handleClick(item)" @on-close="handleClose(item)" ref="tagsPageOpened"
+                        @contextmenu.prevent.native="contextMenu(item, $event)">
                         {{ showTitleInside(item) }}
                     </Tag>
                 </transition-group>
@@ -66,6 +67,8 @@ export default {
         return {
             tagBodyLeft: 0,
             visible: false,
+            contextMenuLeft: 0,
+            contextMenuTop: 0,
             menuList: {
                 others: '关闭其他',
                 all: '关闭所有'
@@ -169,7 +172,31 @@ export default {
                 this.tagBodyLeft = -(tag.offsetLeft - (outerWidth - this.outerPadding - tag.offsetWidth))
             }
         },
-    }
+        contextMenu(item, e) {
+            if (item.name === this.$config.homeName) {
+                return
+            }
+            this.visible = true
+            const offsetLeft = this.$el.getBoundingClientRect().left
+            this.contextMenuLeft = e.clientX - offsetLeft + 10
+            this.contextMenuTop = e.clientY - 64
+        },
+        closeMenu() {
+            this.visible = false
+        }
+    },
+    watch: {
+        '$route'(to) {
+            this.getTagElementByRoute(to)
+        },
+        visible(value) {
+            if (value) {
+                document.body.addEventListener('click', this.closeMenu)
+            } else {
+                document.body.removeEventListener('click', this.closeMenu)
+            }
+        }
+    },
 }
 
 </script>

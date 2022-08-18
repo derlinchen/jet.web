@@ -1,2 +1,2 @@
-import user from './menu.vue'
-export default user
+import menu from './menu.vue'
+export default menu
