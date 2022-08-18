@@ -1,4 +1,5 @@
 <template>
+  <!-- 全屏 -->
   <div v-if="showFullScreenBtn" class="full-screen-btn-con">
     <Tooltip :content="value ? '退出全屏' : '全屏'" placement="bottom">
       <Icon @click.native="handleChange" :type="value ? 'md-contract' : 'md-expand'" :size="23"></Icon>
@@ -10,7 +11,7 @@
 export default {
   name: 'Fullscreen',
   computed: {
-    showFullScreenBtn () {
+    showFullScreenBtn() {
       return window.navigator.userAgent.indexOf('MSIE') < 0
     }
   },
@@ -21,7 +22,7 @@ export default {
     }
   },
   methods: {
-    handleFullscreen () {
+    handleFullscreen() {
       let main = document.body
       if (this.value) {
         if (document.exitFullscreen) {
@@ -45,11 +46,11 @@ export default {
         }
       }
     },
-    handleChange () {
+    handleChange() {
       this.handleFullscreen()
     }
   },
-  mounted () {
+  mounted() {
     let isFullscreen = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen
     isFullscreen = !!isFullscreen
     document.addEventListener('fullscreenchange', () => {
@@ -74,11 +75,11 @@ export default {
 </script>
 
 <style lang="less">
-.full-screen-btn-con .ivu-tooltip-rel{
+.full-screen-btn-con .ivu-tooltip-rel {
   height: 64px;
   line-height: 70px;
-  // vertical-align: middle;
-  i{
+
+  i {
     cursor: pointer;
   }
 }
