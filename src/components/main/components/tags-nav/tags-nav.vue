@@ -133,7 +133,6 @@ export default {
         handleTagsOption(type) {
             if (type.includes('all')) {
                 // 关闭所有，除了index
-                console.log(this.$config)
                 let res = this.list.filter(item => item.name === this.$config.indexName)
                 this.$emit('on-close', res, 'all')
             } else if (type.includes('others')) {
