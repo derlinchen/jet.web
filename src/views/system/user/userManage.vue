@@ -16,7 +16,7 @@
                     <Button @click="addUser" icon="md-add" type="primary">
                         新增
                     </Button>
-                    <Button @click="deleteUserBatch" icon="md-trash" type="error">
+                    <Button @click="deleteUsers" icon="md-trash" type="error">
                         删除
                     </Button>
                 </Space>
@@ -48,7 +48,9 @@
 <script>
 import './index.less'
 import {
-    searchUser
+    searchSysUser,
+    deleteSysUser,
+    deleteSysUsers
 } from '@/api/userManage'
 
 export default {
@@ -123,7 +125,7 @@ export default {
                     userName: this.userName
                 }
             }
-            searchUser(param).then(res => {
+            searchSysUser(param).then(res => {
                 if (res.code === '200') {
                     this.tableData = res.data.list
                     this.page.total = res.data.totalRecords
@@ -142,19 +144,60 @@ export default {
             this.searchUser()
         },
         showEditUser(row) {
-            
+
         },
         deleteUser(row) {
-            
+            let param = {
+                id: row.id
+            }
+            deleteSysUser(param).then(res => {
+                if (res.code === '200') {
+                    this.$Message['info']({
+                        background: true,
+                        content: '删除成功'
+                    })
+                } else {
+                    this.$Message['info']({
+                        background: true,
+                        content: res.message
+                    })
+                }
+                this.searchUser()
+            })
         },
         showUser(row) {
-            
+
         },
         addUser() {
 
         },
-        deleteUserBatch() {
+        deleteUsers() {
+            if (this.selectRow.length === 0) {
+                this.$Message['error']({
+                    background: true,
+                    content: '请选择要删除的数据'
+                })
+                return
+            }
 
+            let ids = this.selectRow.map(item => {
+                return item.id
+            })
+
+            deleteSysUsers(ids).then(res => {
+               if (res.code === '200') {
+                    this.$Message['info']({
+                        background: true,
+                        content: '删除成功'
+                    })
+                } else {
+                    this.$Message['info']({
+                        background: true,
+                        content: res.message
+                    })
+                }
+                this.searchUser()
+            })
         }
     },
 
