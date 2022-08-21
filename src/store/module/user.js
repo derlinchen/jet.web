@@ -3,7 +3,6 @@ import {
 } from '@/api/user'
 
 import { setToken, getToken, setMenuListInLocalstorage,} from '@/libs/util'
-import { Message } from 'view-ui-plus'
 
 export default {
     state: {

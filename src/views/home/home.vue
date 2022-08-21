@@ -1,16 +1,12 @@
 <template>
-    <div>
-        首页
-    </div>
+   首页
 
 </template>
 
     
 <script>
-export default {
-    name: 'home',
-    mounted() {
 
-    }
+export default {
+    name: 'home'
 }
 </script>

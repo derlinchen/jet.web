@@ -1,8 +1,5 @@
 <template>
-    <div>
-        菜单
-    </div>
-
+    菜单
 </template>
 
     
