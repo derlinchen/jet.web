@@ -16,7 +16,7 @@
                     <Button @click="addUser" icon="md-add" type="primary">
                         新增
                     </Button>
-                    <Button @click="deleteUserBatch" icon="md-remove" type="error">
+                    <Button @click="deleteUserBatch" icon="md-trash" type="error">
                         删除
                     </Button>
                 </Space>
