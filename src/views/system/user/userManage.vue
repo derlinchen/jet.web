@@ -13,8 +13,13 @@
                 </Button>
             </Form>
         </div>
-
+        
         <Table border ref="selection" :columns="columns" :data="tableData" @on-selection-change="columnSelectChange">
+            <template #action="{ row }">
+                <Button type="primary" size="small" style="margin-right: 5px" @click="showUser(row)">查看</Button>
+                <Button type="primary" size="small" style="margin-right: 5px" @click="showEditUser(row)">编辑</Button>
+                <Button type="error" size="small" @click="deleteUser(row)">删除</Button>
+            </template>
         </Table>
         <div style="margin-top:10px">
             <Page :total="page.total" :page-size="page.pageSize" show-total show-elevator show-sizer
@@ -22,7 +27,7 @@
                 @on-page-size-change="pageSizeChange" />
         </div>
 
-        
+
 
     </Card>
 
@@ -66,6 +71,12 @@ export default {
                 {
                     title: '创建时间',
                     key: 'createDate'
+                },
+                {
+                    title: '操作',
+                    slot: 'action',
+                    width: 180,
+                    align: 'center'
                 }
             ],
             tableData: [],
@@ -118,6 +129,15 @@ export default {
             this.page.pageNo = 1
             this.page.pageSize = pageSize
             this.searchUser()
+        },
+        showEditUser(row) {
+            console.log(row)
+        },
+        deleteUser(row) {
+            console.log(row)
+        },
+        showUser(row) {
+            console.log(row)
         }
     },
 
