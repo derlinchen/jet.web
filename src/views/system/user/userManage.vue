@@ -8,12 +8,23 @@
                 <FormItem label="用户名称：">
                     <Input clearable placeholder="输入用户名称" class="search-input" v-model="userName" />
                 </FormItem>
-                <Button @click="searchUser" class="search-btn" type="primary">
-                    查询
-                </Button>
+
+                <Space wrap>
+                    <Button @click="searchUser" icon="md-search" type="primary">
+                        查询
+                    </Button>
+                    <Button @click="addUser" icon="md-add" type="primary">
+                        新增
+                    </Button>
+                    <Button @click="deleteUserBatch" icon="md-remove" type="error">
+                        删除
+                    </Button>
+                </Space>
+
             </Form>
+
         </div>
-        
+
         <Table border ref="selection" :columns="columns" :data="tableData" @on-selection-change="columnSelectChange">
             <template #action="{ row }">
                 <Button type="primary" size="small" style="margin-right: 5px" @click="showUser(row)">查看</Button>
@@ -131,13 +142,19 @@ export default {
             this.searchUser()
         },
         showEditUser(row) {
-            console.log(row)
+            
         },
         deleteUser(row) {
-            console.log(row)
+            
         },
         showUser(row) {
-            console.log(row)
+            
+        },
+        addUser() {
+
+        },
+        deleteUserBatch() {
+
         }
     },
 
