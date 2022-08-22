@@ -46,3 +46,15 @@ export const getUserStatusList = () => {
         method: 'get'
     })
 }
+
+
+export const saveSysUser = (param) => {
+    return request.request({
+        header: {
+            'Content-Type': 'application/json'
+        },
+        url: '/erp/sysUser/v1/saveSysUser',
+        data: param,
+        method: 'post'
+    })
+}

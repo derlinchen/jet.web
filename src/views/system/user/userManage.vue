@@ -50,21 +50,33 @@
             </Form>
         </Modal>
 
-        <Modal v-model="addModal" width="640" title="用户" @on-ok="saveUser">
+        <Modal v-model="addModal" width="700" title="用户" @on-ok="saveUser">
             <Form inline :label-width="100">
                 <FormItem label="用户编号：">
-                    <Input clearable class="search-input" v-model="save.userCode" />
+                    <Input clearable class="search-input" v-model="save.userCode" style="width: 220px"/>
                 </FormItem>
                 <FormItem label="用户名称">
-                    <Input clearable class="search-input" v-model="save.userName" />
+                    <Input clearable class="search-input" v-model="save.userName" style="width: 220px"/>
                 </FormItem>
             </Form>
             <Form inline :label-width="100">
                 <FormItem label="用户状态：">
-                    <Select v-model="save.userStatus" style="width:185px">
+                    <Select v-model="save.userStatus" style="width:220px">
                         <Option v-for="item in userStatusList" :value="item.code" :key="item.code">{{ item.name }}
                         </Option>
                     </Select>
+                </FormItem>
+                <FormItem label="角色：">
+                    <Select v-model="save.roleIdArray" style="width:220px" multiple>
+                        <Option v-for="item in roleList" :value="item.id" :key="item.id">{{ item.roleName }}
+                        </Option>
+                    </Select>
+                </FormItem>
+            </Form>
+
+            <Form :label-width="100">
+                <FormItem label="用户描述：">
+                    <Input v-model="save.userDesc" type="textarea" style="width: 550px;"/>
                 </FormItem>
             </Form>
         </Modal>
@@ -81,7 +93,8 @@ import {
     deleteSysUser,
     deleteSysUsers,
     updateSysUser,
-    getUserStatusList
+    getUserStatusList,
+    saveSysUser
 } from '@/api/userManage'
 
 import { getSysRoleList } from '@/api/roleManage'
@@ -111,7 +124,11 @@ export default {
             // 新增弹窗
             addModal: false,
 
+            // 用户状态
             userStatusList: [],
+
+            // 角色
+            roleList: [],
 
             // column信息
             columns: [
@@ -131,6 +148,10 @@ export default {
                 {
                     title: '用户角色',
                     key: 'roleNames'
+                },
+                {
+                    title:'用户描述',
+                    key:'userDesc'
                 },
                 {
                     title: '创建人',
@@ -274,6 +295,39 @@ export default {
                 }
                 this.searchUser()
             })
+        },
+        saveUser() {
+            let roleIdArray = this.save.roleIdArray
+            let roleList = this.roleList
+            let roleNameArray = []
+            roleIdArray.forEach(roleId => {
+                roleList.forEach(roleItem => {
+                    if (roleId === roleItem.id) {
+                        roleNameArray.push(roleItem.roleName)
+                    }
+                })
+            });
+
+            this.save.roleIds = roleIdArray.toString()
+            this.save.roleNames = roleNameArray.toString()
+
+            saveSysUser(this.save).then(res => {
+                if (res.code === '200') {
+                    this.$Message['info']({
+                        background: true,
+                        content: '保存成功'
+                    })
+                } else {
+                    this.$Message['info']({
+                        background: true,
+                        content: res.message
+                    })
+                }
+                this.save = {}
+                this.searchUser()
+            })
+
+
         }
     },
 
@@ -285,7 +339,9 @@ export default {
         })
 
         getSysRoleList().then(res => {
-            console.log(res)
+            if (res.code === '200') {
+                this.roleList = res.data
+            }
         })
     },
 
