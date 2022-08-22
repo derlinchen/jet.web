@@ -1,2 +1,2 @@
-import menuManage from './menu-manage.vue'
+import menuManage from './menuManage.vue'
 export default menuManage
