@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Message } from 'view-ui-plus';
+import store from '@/store'
 
 const request = axios.create({
     // 配置请求超时时间
@@ -8,7 +9,7 @@ const request = axios.create({
 
 request.interceptors.request.use(config => {
     // 自定义header，可添加项目token
-    config.headers.token = 'token';
+    config.headers.userCode = store.state.userCode;
     return config;
 });
 
