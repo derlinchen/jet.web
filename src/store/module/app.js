@@ -2,6 +2,7 @@ import {
     getBreadCrumbList,
     getRouteTitleHandled,
     setTagNavListInLocalstorage,
+    getTagNavListFromLocalstorage,
     routeHasExist,
     routeEqual,
     getNextRoute
