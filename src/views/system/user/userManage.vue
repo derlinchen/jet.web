@@ -3,10 +3,10 @@
         <div class="search-con search-con-top">
             <Form inline :label-width="100">
                 <FormItem label="用户编号：">
-                    <Input clearable placeholder="输入用户编号" class="search-input" v-model="userCode" />
+                    <Input clearable placeholder="输入用户编号" class="search-input" v-model="search.userCode" />
                 </FormItem>
                 <FormItem label="用户名称：">
-                    <Input clearable placeholder="输入用户名称" class="search-input" v-model="userName" />
+                    <Input clearable placeholder="输入用户名称" class="search-input" v-model="search.userName" />
                 </FormItem>
 
                 <Space wrap>
@@ -25,7 +25,8 @@
 
         </div>
 
-        <Table border ref="selection" :columns="columns" :data="tableData" @on-selection-change="columnSelectChange">
+        <Table border :loading="loading" ref="selection" :columns="columns" :data="tableData"
+            @on-selection-change="columnSelectChange">
             <template #action="{ row }">
                 <Button type="primary" size="small" style="margin-right: 5px" @click="showUser(row)">查看</Button>
                 <Button type="primary" size="small" style="margin-right: 5px" @click="showEditUser(row)">编辑</Button>
@@ -38,7 +39,35 @@
                 @on-page-size-change="pageSizeChange" />
         </div>
 
+        <Modal v-model="editModal" width="640" title="修改用户" @on-ok="editUser">
+            <Form inline :label-width="100">
+                <FormItem label="用户编号：">
+                    <Input clearable class="search-input" v-model="edit.userCode" />
+                </FormItem>
+                <FormItem label="用户名称">
+                    <Input clearable class="search-input" v-model="edit.userName" />
+                </FormItem>
+            </Form>
+        </Modal>
 
+        <Modal v-model="addModal" width="640" title="用户" @on-ok="saveUser">
+            <Form inline :label-width="100">
+                <FormItem label="用户编号：">
+                    <Input clearable class="search-input" v-model="save.userCode" />
+                </FormItem>
+                <FormItem label="用户名称">
+                    <Input clearable class="search-input" v-model="save.userName" />
+                </FormItem>
+            </Form>
+            <Form inline :label-width="100">
+                <FormItem label="用户状态：">
+                    <Select v-model="save.userStatus" style="width:185px">
+                        <Option v-for="item in userStatusList" :value="item.code" :key="item.code">{{ item.name }}
+                        </Option>
+                    </Select>
+                </FormItem>
+            </Form>
+        </Modal>
 
     </Card>
 
@@ -50,15 +79,41 @@ import './index.less'
 import {
     searchSysUser,
     deleteSysUser,
-    deleteSysUsers
+    deleteSysUsers,
+    updateSysUser,
+    getUserStatusList
 } from '@/api/userManage'
+
+import { getSysRoleList } from '@/api/roleManage'
 
 export default {
     name: 'userManage',
     data() {
         return {
-            userCode: '',
-            userName: '',
+            // table loading效果
+            loading: false,
+
+            // 查询条件
+            search: {
+                userCode: '',
+                userName: ''
+            },
+
+            // 编辑字段
+            edit: {},
+
+            // 新增字段
+            save: {},
+
+            // 修改弹窗
+            editModal: false,
+
+            // 新增弹窗
+            addModal: false,
+
+            userStatusList: [],
+
+            // column信息
             columns: [
                 {
                     type: 'selection',
@@ -92,23 +147,19 @@ export default {
                     align: 'center'
                 }
             ],
+
+            // 表单信息
             tableData: [],
+
+            // 复选框选中信息
             selectRow: [],
+
+            // 分页信息
             page: {
                 pageNo: 1,
                 total: 0,
                 pageSize: 10,
-            },
-            userStatus: [
-                {
-                    userStatus: '1',
-                    userStatusName: '正常'
-                },
-                {
-                    userStatus: '2',
-                    userStatusName: '异常'
-                }
-            ]
+            }
         }
     },
 
@@ -117,12 +168,13 @@ export default {
             this.selectRow = row
         },
         searchUser() {
+            this.loading = true
             let param = {
                 pageNo: this.page.pageNo,
                 pageSize: this.page.pageSize,
                 item: {
-                    userCode: this.userCode,
-                    userName: this.userName
+                    userCode: this.search.userCode,
+                    userName: this.search.userName
                 }
             }
             searchSysUser(param).then(res => {
@@ -130,7 +182,13 @@ export default {
                     this.tableData = res.data.list
                     this.page.total = res.data.totalRecords
                     this.pageSize = res.data.pageSize
+                } else {
+                    this.$Message['info']({
+                        background: true,
+                        content: res.message
+                    })
                 }
+                this.loading = false
             })
         },
         pageChange(pageNo) {
@@ -144,7 +202,8 @@ export default {
             this.searchUser()
         },
         showEditUser(row) {
-
+            this.editModal = true
+            this.edit = row
         },
         deleteUser(row) {
             let param = {
@@ -169,7 +228,7 @@ export default {
 
         },
         addUser() {
-
+            this.addModal = true
         },
         deleteUsers() {
             if (this.selectRow.length === 0) {
@@ -185,7 +244,7 @@ export default {
             })
 
             deleteSysUsers(ids).then(res => {
-               if (res.code === '200') {
+                if (res.code === '200') {
                     this.$Message['info']({
                         background: true,
                         content: '删除成功'
@@ -198,7 +257,36 @@ export default {
                 }
                 this.searchUser()
             })
+        },
+
+        editUser() {
+            updateSysUser(this.edit).then(res => {
+                if (res.code === '200') {
+                    this.$Message['info']({
+                        background: true,
+                        content: '修改成功'
+                    })
+                } else {
+                    this.$Message['info']({
+                        background: true,
+                        content: res.message
+                    })
+                }
+                this.searchUser()
+            })
         }
+    },
+
+    created() {
+        getUserStatusList().then(res => {
+            if (res.code === '200') {
+                this.userStatusList = res.data
+            }
+        })
+
+        getSysRoleList().then(res => {
+            console.log(res)
+        })
     },
 
     // 初次加载调用方法

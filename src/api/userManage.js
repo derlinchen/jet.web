@@ -13,7 +13,7 @@ export const searchSysUser = (param) => {
 
 export const deleteSysUser = (param) => {
     return request.request({
-        url:'/erp/sysUser/v1/deleteSysUser',
+        url: '/erp/sysUser/v1/deleteSysUser',
         params: param,
         method: 'delete'
     })
@@ -21,9 +21,28 @@ export const deleteSysUser = (param) => {
 
 export const deleteSysUsers = (param) => {
     return request.request({
-        url:'/erp/sysUser/v1/deleteSysUsers',
+        url: '/erp/sysUser/v1/deleteSysUsers',
         data: param,
         method: 'delete'
     })
 }
 
+
+export const updateSysUser = (param) => {
+    return request.request({
+        header: {
+            'Content-Type': 'application/json'
+        },
+        url: '/erp/sysUser/v1/updateSysUser',
+        data: param,
+        method: 'post'
+    })
+}
+
+
+export const getUserStatusList = () => {
+    return request.request({
+        url: '/erp/sysUser/v1/getUserStatusList',
+        method: 'get'
+    })
+}
