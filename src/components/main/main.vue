@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapGetters } from 'vuex'
 import SideMenu from './components/side-menu'
 import HeaderBar from './components/header-bar'
 import User from './components/user'
@@ -90,7 +90,7 @@ export default {
     computed: {
         // 从localstorage中获取菜单信息
         menuList() {
-            return getMenuListFromLocalstorage()
+            return this.$store.getters.getMenuList
         },
         // 获取登录后个人头像
         userAvatar() {
