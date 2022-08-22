@@ -242,6 +242,7 @@ export default {
                         content: res.message
                     })
                 }
+                this.page.pageNo = 1
                 this.searchUser()
             })
         },
@@ -276,6 +277,7 @@ export default {
                         content: res.message
                     })
                 }
+                this.page.pageNo = 1
                 this.searchUser()
             })
         },

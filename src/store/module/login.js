@@ -3,31 +3,16 @@ import {
 } from '@/api/login'
 
 import {
-    setToken,
-    getToken,
     setMenuListInLocalstorage,
-    getMenuListFromLocalstorage
+    getMenuListFromLocalstorage,
+    setUserInfoInLocalstorage,
+    getUserInfoFromLocalstorage
 } from '@/libs/util'
 
 export default {
-    state: {
-        userCode: '',
-        userName: '',
-        avatarImgPath: '',
-        menuList: [],
-        token: getToken()
-    },
-
     mutations: {
-        setToken(state, token) {
-            state.token = token
-            setToken(token)
-        },
-        setUserCode(state, userCode) {
-            state.userCode = userCode
-        },
-        setUserName(state, userName) {
-            state.userName = userName
+        setUserInfo(state, userInfo) {
+            setUserInfoInLocalstorage(userInfo)
         },
         setMenuList(state, menuList) {
             setMenuListInLocalstorage([...menuList])
@@ -37,6 +22,9 @@ export default {
     getters: {
         getMenuList() {
             return getMenuListFromLocalstorage()
+        },
+        getUserInfo() {
+            return getUserInfoFromLocalstorage()
         }
     },
 
@@ -50,9 +38,12 @@ export default {
                     password
                 }).then(res => {
                     const data = res.data
-                    commit('setToken', data.token)
-                    commit('setUserCode', data.userCode)
-                    commit('setUserName', data.userName)
+                    let userInfo = {
+                        userCode: data.userCode,
+                        token: data.token,
+                        userName: data.userName
+                    }
+                    commit('setUserInfo', userInfo)
                     commit('setMenuList', data.menuList)
                     const defaultRoute = data.menuList[0].name
                     resolve(defaultRoute)

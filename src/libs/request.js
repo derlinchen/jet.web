@@ -9,8 +9,11 @@ const request = axios.create({
 
 request.interceptors.request.use(config => {
     // 自定义header，可添加项目token
-    config.headers.userCode = store.state.login.userCode;
-    return config;
+    let userInfo = store.getters.getUserInfo
+    config.headers.userCode = userInfo.userCode
+    config.headers.userName = encodeURIComponent(userInfo.userName)
+    config.headers.token = userInfo.toekn
+    return config
 });
 
 // 返回拦截
