@@ -1,6 +1,6 @@
 import {
     login
-} from '@/api/user'
+} from '@/api/login'
 
 import { setToken, getToken, setMenuListInLocalstorage,} from '@/libs/util'
 
