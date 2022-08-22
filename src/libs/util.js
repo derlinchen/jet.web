@@ -61,8 +61,6 @@ export const showTitle = (item) => {
   return title
 }
 
-
-
 export const findNodeUpperByClasses = (ele, classes) => {
   let parentNode = ele.parentNode
   if (parentNode) {
