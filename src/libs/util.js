@@ -150,3 +150,13 @@ export const getNextRoute = (list, route) => {
   return res
 }
 
+
+
+export const setUserInfoInLocalstorage = obj => {
+  localStorage.userInfo = JSON.stringify(obj)
+}
+
+export const getUserInfoFromLocalstorage = () => {
+  const obj = localStorage.userInfo
+  return obj ? JSON.parse(obj) : {}
+}
