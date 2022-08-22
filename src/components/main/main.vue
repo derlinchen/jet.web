@@ -53,7 +53,7 @@ import HeaderBar from './components/header-bar'
 import User from './components/user'
 import Fullscreen from './components/fullscreen'
 import TagsNav from './components/tags-nav'
-import { getMenuListFromLocalstorage, routeEqual } from '@/libs/util'
+import { routeEqual } from '@/libs/util'
 import minLogo from '@/assets/images/logo-min.jpg'
 import maxLogo from '@/assets/images/logo.jpg'
 
