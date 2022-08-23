@@ -1,12 +1,15 @@
 import Main from '@/components/main'
 
 export default [
-
     {
+        path: '/',
+        name: '_login',
+        component: () => import('@/views/login/login.vue')
+    }, {
         path: '/login',
         name: 'login',
         component: () => import('@/views/login/login.vue')
-    },{
+    }, {
         path: '/',
         name: '_index',
         redirect: '/index',
