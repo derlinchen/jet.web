@@ -12,10 +12,10 @@ import router from '@/router'
 const closePage = (state, route) => {
     const nextRoute = getNextRoute(state.tagNavList, route)
     state.tagNavList = state.tagNavList.filter(item => {
-      return !routeEqual(item, route)
+        return !routeEqual(item, route)
     })
     router.push(nextRoute)
-  }
+}
 
 
 export default {
@@ -42,15 +42,15 @@ export default {
             if (!route) return
             closePage(state, route)
         },
-        setTagNavList (state, list) {
+        setTagNavList(state, list) {
             let tagList = []
             if (list) {
-              tagList = [...list]
+                tagList = [...list]
             } else {
                 tagList = getTagNavListFromLocalstorage() || []
             }
             state.tagNavList = tagList
             setTagNavListInLocalstorage([...tagList])
-          },
+        },
     }
 }

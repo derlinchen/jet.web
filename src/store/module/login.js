@@ -31,7 +31,6 @@ export default {
         }
     },
 
-
     actions: {
         handleLogin({ commit }, { userCode, password }) {
             userCode = userCode.trim()
