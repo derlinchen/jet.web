@@ -6,7 +6,6 @@ import store from './store'
 import './styles/index.less'
 import config from '@/config'
 
-// import './mock'
 
 const app = createApp(App)
 app.config.globalProperties.$config = config
