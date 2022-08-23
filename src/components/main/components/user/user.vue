@@ -18,10 +18,10 @@
   <Modal v-model="editPasswordModal" width="640" title="修改密码" @on-ok="editPassword">
     <Form inline :label-width="100">
       <FormItem label="用户编号：">
-        <Input clearable class="search-input" disabled v-model="editPasswordParam.userCode" />
+        <Input disabled v-model="editPasswordParam.userCode" />
       </FormItem>
       <FormItem label="密码">
-        <Input clearable class="search-input" v-model="editPasswordParam.password" />
+        <Input type="password" v-model="editPasswordParam.password" />
       </FormItem>
     </Form>
   </Modal>
