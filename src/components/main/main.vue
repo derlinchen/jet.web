@@ -188,6 +188,10 @@ export default {
     },
 
     mounted() {
+
+        // 获取tag导航
+        this.setTagNavList()
+
         // 页面渲染后，将页面加入tag，类似tab页
         const { name, params, query, meta } = this.$route
         if (name !== this.$config.indexName) {
@@ -195,6 +199,7 @@ export default {
                 route: { name, params, query, meta }
             })
         }
+
         // 设置面包屑
         this.setBreadCrumb(this.$route)
     }
