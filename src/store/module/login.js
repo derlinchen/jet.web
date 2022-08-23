@@ -73,6 +73,8 @@ export default {
         handleEditPassword({ commit }, param) {
             return new Promise((resolve) => {
                 editPassword(param).then(res => {
+                    commit('setUserInfo', {})
+                    commit('setMenuList', [])
                     resolve(res)
                 })
             })

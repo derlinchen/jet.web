@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import routes from '@/router/routes'
 import ViewUIPlus from 'view-ui-plus'
+import { getUserInfoFromLocalstorage, getMenuListFromLocalstorage } from '@/libs/util'
+
+const LOGIN_PAGE_NAME = 'login'
 
 const router = createRouter({
   routes,
@@ -13,7 +16,16 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   ViewUIPlus.LoadingBar.start();
-  next();
+  const token = getUserInfoFromLocalstorage().token
+  console.log(to.name)
+  if (!token && to.name !== LOGIN_PAGE_NAME) {
+    next({
+      name: LOGIN_PAGE_NAME // 跳转到登录页
+    })
+  } else {
+    next();
+  }
+
 });
 
 router.afterEach(route => {
