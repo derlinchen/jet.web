@@ -174,7 +174,7 @@ export default {
         '$route'(newRoute) {
             // 获取新路由信息
             const { name, query, params, meta } = newRoute
-            if (name !== this.$config.indexName) {
+            if (name !== this.$config.indexName && name !== this.$config.loginName) {
                 // 将路由添加到tag
                 this.addTag({
                     route: { name, query, params, meta },

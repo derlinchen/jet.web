@@ -17,4 +17,19 @@ export const login = ({ userCode, password }) => {
 }
 
 
+export const logout = ({ token }) => {
+    const param = {
+        'token': token
+    }
+
+    return request.request({
+        header: {
+            'Content-Type': 'application/json'
+        },
+        url: '/erp/sysUser/v1/logout',
+        data: param,
+        method: 'post'
+    })
+}
+
 

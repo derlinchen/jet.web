@@ -13,8 +13,6 @@ export const getMenuListFromLocalstorage = () => {
   return list ? JSON.parse(list) : []
 }
 
-
-
 /**
  * @param {Array} routeMetched 当前路由metched
  * @returns {Array}
@@ -107,23 +105,6 @@ export const setTagNavListInLocalstorage = list => {
 export const getTagNavListFromLocalstorage = () => {
   const list = localStorage.tagNaveList
   return list ? JSON.parse(list) : []
-}
-
-
-export const getHomeRoute = (routers, homeName = 'home') => {
-  let i = -1
-  let len = routers.length
-  let homeRoute = {}
-  while (++i < len) {
-    let item = routers[i]
-    if (item.children && item.children.length) {
-      let res = getHomeRoute(item.children, homeName)
-      if (res.name) return res
-    } else {
-      if (item.name === homeName) homeRoute = item
-    }
-  }
-  return homeRoute
 }
 
 export const getNextRoute = (list, route) => {

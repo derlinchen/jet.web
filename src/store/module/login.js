@@ -1,6 +1,9 @@
 import {
-    login
+    login,
+    logout
 } from '@/api/login'
+
+import config from '@/config'
 
 import {
     setMenuListInLocalstorage,
@@ -47,6 +50,20 @@ export default {
                     commit('setMenuList', data.menuList)
                     const defaultRoute = data.menuList[0].name
                     resolve(defaultRoute)
+                }).catch(err => {
+
+                })
+            })
+        },
+        handleLogOut({commit}) {
+            return new Promise((resolve) => {
+                let token = this.getters.getUserInfo.token
+                logout({
+                    token
+                }).then(res => {
+                    commit('setUserInfo', {})
+                    commit('setMenuList', [])
+                    resolve(config.loginName)
                 }).catch(err => {
 
                 })

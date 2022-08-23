@@ -34,11 +34,11 @@ export default {
 
     // 退出登录
     logout() {
-      // this.handleLogOut().then(() => {
-      //   this.$router.push({
-      //     name: 'login'
-      //   })
-      // })
+      this.handleLogOut().then(() => {
+        this.$router.push({
+          name: 'login'
+        })
+      })
     },
     handleClick(name) {
       switch (name) {

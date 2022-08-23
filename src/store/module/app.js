@@ -29,6 +29,7 @@ export default {
             state.breadCrumbList = getBreadCrumbList(route)
         },
         addTag(state, { route, type = 'unshift' }) {
+            console.log(state.tagNavList)
             let router = getRouteTitleHandled(route)
             if (!routeHasExist(state.tagNavList, router)) {
                 state.tagNavList.push(router)

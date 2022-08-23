@@ -197,9 +197,6 @@ export default {
 
         // 右击菜单
         contextMenu(item, e) {
-            if (item.name === this.$config.homeName) {
-                return
-            }
             this.visible = true
             const offsetLeft = this.$el.getBoundingClientRect().left
             this.contextMenuLeft = e.clientX - offsetLeft + 10
