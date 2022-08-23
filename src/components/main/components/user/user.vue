@@ -9,10 +9,22 @@
         <!-- 下拉选项 -->
         <DropdownMenu>
           <DropdownItem name="logout">退出登录</DropdownItem>
+          <DropdownItem name="editPassword">修改密码</DropdownItem>
         </DropdownMenu>
       </template>
     </Dropdown>
   </div>
+
+  <Modal v-model="editPasswordModal" width="640" title="修改密码" @on-ok="editPassword">
+    <Form inline :label-width="100">
+      <FormItem label="用户编号：">
+        <Input clearable class="search-input" disabled v-model="editPasswordParam.userCode" />
+      </FormItem>
+      <FormItem label="密码">
+        <Input clearable class="search-input" v-model="editPasswordParam.password" />
+      </FormItem>
+    </Form>
+  </Modal>
 </template>
 
 <script>
@@ -20,6 +32,13 @@ import './user.less'
 import { mapActions } from 'vuex'
 export default {
   name: 'User',
+
+  data() {
+    return {
+      editPasswordModal: false,
+      editPasswordParam: {}
+    }
+  },
   props: {
     userAvatar: {
       type: String,
@@ -29,7 +48,8 @@ export default {
   methods: {
 
     ...mapActions([
-      'handleLogOut'
+      'handleLogOut',
+      'handleEditPassword'
     ]),
 
     // 退出登录
@@ -40,9 +60,37 @@ export default {
         })
       })
     },
+
+    showEditPassword() {
+      this.editPasswordModal = true
+      this.editPasswordParam = this.$store.getters.getUserInfo
+      this.editPasswordParam.password = ''
+    },
+
+    editPassword() {
+      this.handleEditPassword(this.editPasswordParam).then(res => {
+        if (res.code === '200') {
+          this.$Message['info']({
+            background: true,
+            content: '修改成功'
+          })
+          this.$router.push({
+            name: 'login'
+          })
+        } else {
+          this.$Message['error']({
+            background: true,
+            content: res.message
+          })
+        }
+      })
+    },
+
     handleClick(name) {
       switch (name) {
         case 'logout': this.logout()
+          break
+        case 'editPassword': this.showEditPassword()
           break
       }
     }

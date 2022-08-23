@@ -1,6 +1,7 @@
 import {
     login,
-    logout
+    logout,
+    editPassword
 } from '@/api/login'
 
 import config from '@/config'
@@ -54,7 +55,7 @@ export default {
                 })
             })
         },
-        handleLogOut({commit}) {
+        handleLogOut({ commit }) {
             return new Promise((resolve) => {
                 let token = this.getters.getUserInfo.token
                 logout({
@@ -65,6 +66,14 @@ export default {
                     resolve(config.loginName)
                 }).catch(err => {
 
+                })
+            })
+        },
+
+        handleEditPassword({ commit }, param) {
+            return new Promise((resolve) => {
+                editPassword(param).then(res => {
+                    resolve(res)
                 })
             })
         }

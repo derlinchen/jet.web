@@ -33,3 +33,15 @@ export const logout = ({ token }) => {
 }
 
 
+export const editPassword = (param) => {
+    return request.request({
+        header: {
+            'Content-Type': 'application/json'
+        },
+        url: '/erp/sysUser/v1/editPassword',
+        data: param,
+        method: 'post'
+    })
+}
+
+
