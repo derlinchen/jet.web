@@ -6,8 +6,8 @@ export default [
         name: 'login',
         component: () => import('@/views/login/login.vue')
     }, {
-        path: '/indexPage',
-        name: '_indexPage',
+        path: '/',
+        name: '_index',
         redirect: '/index',
         component: Main,
         meta: {
@@ -22,8 +22,8 @@ export default [
             }
         ]
     }, {
-        path: '/',
-        name: '_home',
+        path: '/homePage',
+        name: '_homePage',
         redirect: '/home',
         component: Main,
         meta: {
