@@ -1,12 +1,12 @@
 <template>
     <Card>
-        <div class="search-con search-con-top">
+        <div>
             <Form inline :label-width="100">
                 <FormItem label="用户编号：">
-                    <Input clearable placeholder="输入用户编号" class="search-input" v-model="search.userCode" />
+                    <Input clearable placeholder="输入用户编号" v-model="search.userCode" />
                 </FormItem>
                 <FormItem label="用户名称：">
-                    <Input clearable placeholder="输入用户名称" class="search-input" v-model="search.userName" />
+                    <Input clearable placeholder="输入用户名称" v-model="search.userName" />
                 </FormItem>
 
                 <Space wrap>
@@ -42,10 +42,10 @@
         <Modal v-model="editModal" width="700" title="修改用户" @on-ok="editUser">
             <Form inline :label-width="100">
                 <FormItem label="用户编号：">
-                    <Input clearable class="search-input" v-model="edit.userCode" style="width: 220px" />
+                    <Input clearable v-model="edit.userCode" style="width: 220px" />
                 </FormItem>
                 <FormItem label="用户名称">
-                    <Input clearable class="search-input" v-model="edit.userName" style="width: 220px" />
+                    <Input clearable v-model="edit.userName" style="width: 220px" />
                 </FormItem>
             </Form>
             <Form inline :label-width="100">
@@ -67,10 +67,10 @@
         <Modal v-model="addModal" width="700" title="用户" @on-ok="saveUser">
             <Form inline :label-width="100">
                 <FormItem label="用户编号：">
-                    <Input clearable class="search-input" v-model="save.userCode" style="width: 220px" />
+                    <Input clearable v-model="save.userCode" style="width: 220px" />
                 </FormItem>
                 <FormItem label="用户名称">
-                    <Input clearable class="search-input" v-model="save.userName" style="width: 220px" />
+                    <Input clearable v-model="save.userName" style="width: 220px" />
                 </FormItem>
             </Form>
             <Form inline :label-width="100">
