@@ -10,7 +10,9 @@ import {
     setMenuListInLocalstorage,
     getMenuListFromLocalstorage,
     setUserInfoInLocalstorage,
-    getUserInfoFromLocalstorage
+    getUserInfoFromLocalstorage,
+    setTagNavListInLocalstorage,
+    getTagNavListFromLocalstorage,
 } from '@/libs/util'
 
 export default {
@@ -20,6 +22,21 @@ export default {
         },
         setMenuList(state, menuList) {
             setMenuListInLocalstorage([...menuList])
+        },
+        // 设置导航
+        setTagNavList(state, list) {
+            // 设置导航
+            let tagList = []
+            if (list) {
+                tagList = [...list]
+            } else {
+                tagList = getTagNavListFromLocalstorage() || []
+            }
+
+            // 将导航存入state
+            state.tagNavList = tagList
+            // 将导航存入localstorage
+            setTagNavListInLocalstorage([...tagList])
         }
     },
 
@@ -63,6 +80,7 @@ export default {
                 }).then(res => {
                     commit('setUserInfo', {})
                     commit('setMenuList', [])
+                    commit('setTagNavList',[])
                     resolve(config.loginName)
                 }).catch(err => {
 
