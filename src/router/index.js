@@ -17,7 +17,6 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   ViewUIPlus.LoadingBar.start();
   const token = getUserInfoFromLocalstorage().token
-  console.log(to.name)
   if (!token && to.name !== LOGIN_PAGE_NAME) {
     next({
       name: LOGIN_PAGE_NAME // 跳转到登录页
