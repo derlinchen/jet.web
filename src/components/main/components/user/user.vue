@@ -69,18 +69,13 @@ export default {
 
     editPassword() {
       this.handleEditPassword(this.editPasswordParam).then(res => {
-        if (res.code === '200') {
+        if (res && res.code === '200') {
           this.$Message['info']({
             background: true,
             content: '修改成功'
           })
           this.$router.push({
             name: 'login'
-          })
-        } else {
-          this.$Message['error']({
-            background: true,
-            content: res.message
           })
         }
       })

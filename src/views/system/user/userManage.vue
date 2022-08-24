@@ -39,13 +39,27 @@
                 @on-page-size-change="pageSizeChange" />
         </div>
 
-        <Modal v-model="editModal" width="640" title="修改用户" @on-ok="editUser">
+        <Modal v-model="editModal" width="700" title="修改用户" @on-ok="editUser">
             <Form inline :label-width="100">
                 <FormItem label="用户编号：">
-                    <Input clearable class="search-input" v-model="edit.userCode" />
+                    <Input clearable class="search-input" v-model="edit.userCode" style="width: 220px" />
                 </FormItem>
                 <FormItem label="用户名称">
-                    <Input clearable class="search-input" v-model="edit.userName" />
+                    <Input clearable class="search-input" v-model="edit.userName" style="width: 220px" />
+                </FormItem>
+            </Form>
+            <Form inline :label-width="100">
+                <FormItem label="用户状态：">
+                    <Select v-model="edit.userStatus" style="width:220px">
+                        <Option v-for="item in userStatusList" :value="item.code" :key="item.code">{{ item.name }}
+                        </Option>
+                    </Select>
+                </FormItem>
+                <FormItem label="角色：">
+                    <Select v-model="edit.roleIdArray" style="width:220px" multiple>
+                        <Option v-for="item in roleList" :value="item.id" :key="item.id">{{ item.roleName }}
+                        </Option>
+                    </Select>
                 </FormItem>
             </Form>
         </Modal>
@@ -53,10 +67,10 @@
         <Modal v-model="addModal" width="700" title="用户" @on-ok="saveUser">
             <Form inline :label-width="100">
                 <FormItem label="用户编号：">
-                    <Input clearable class="search-input" v-model="save.userCode" style="width: 220px"/>
+                    <Input clearable class="search-input" v-model="save.userCode" style="width: 220px" />
                 </FormItem>
                 <FormItem label="用户名称">
-                    <Input clearable class="search-input" v-model="save.userName" style="width: 220px"/>
+                    <Input clearable class="search-input" v-model="save.userName" style="width: 220px" />
                 </FormItem>
             </Form>
             <Form inline :label-width="100">
@@ -76,7 +90,7 @@
 
             <Form :label-width="100">
                 <FormItem label="用户描述：">
-                    <Input v-model="save.userDesc" type="textarea" style="width: 550px;"/>
+                    <Input v-model="save.userDesc" type="textarea" style="width: 550px;" />
                 </FormItem>
             </Form>
         </Modal>
@@ -150,8 +164,8 @@ export default {
                     key: 'roleNames'
                 },
                 {
-                    title:'用户描述',
-                    key:'userDesc'
+                    title: '用户描述',
+                    key: 'userDesc'
                 },
                 {
                     title: '创建人',
@@ -199,15 +213,10 @@ export default {
                 }
             }
             searchSysUser(param).then(res => {
-                if (res.code === '200') {
+                if (res && res.code === '200') {
                     this.tableData = res.data.list
                     this.page.total = res.data.totalRecords
                     this.pageSize = res.data.pageSize
-                } else {
-                    this.$Message['info']({
-                        background: true,
-                        content: res.message
-                    })
                 }
                 this.loading = false
             })
@@ -225,21 +234,20 @@ export default {
         showEditUser(row) {
             this.editModal = true
             this.edit = row
+            let roleIds = row.roleIds
+            if (roleIds) {
+                this.edit.roleIdArray = roleIds.split(',')
+            }
         },
         deleteUser(row) {
             let param = {
                 id: row.id
             }
             deleteSysUser(param).then(res => {
-                if (res.code === '200') {
+                if (res && res.code === '200') {
                     this.$Message['info']({
                         background: true,
                         content: '删除成功'
-                    })
-                } else {
-                    this.$Message['info']({
-                        background: true,
-                        content: res.message
                     })
                 }
                 this.page.pageNo = 1
@@ -266,15 +274,10 @@ export default {
             })
 
             deleteSysUsers(ids).then(res => {
-                if (res.code === '200') {
+                if (res && res.code === '200') {
                     this.$Message['info']({
                         background: true,
                         content: '删除成功'
-                    })
-                } else {
-                    this.$Message['info']({
-                        background: true,
-                        content: res.message
                     })
                 }
                 this.page.pageNo = 1
@@ -283,16 +286,32 @@ export default {
         },
 
         editUser() {
+            let roleIdArray = this.edit.roleIdArray
+            if (!roleIdArray || roleIdArray.length === 0) {
+                this.$Message['error']({
+                    background: true,
+                    content: '请选则角色'
+                })
+                return
+            }
+            let roleList = this.roleList
+            let roleNameArray = []
+            roleIdArray.forEach(roleId => {
+                roleList.forEach(roleItem => {
+                    if (roleId === roleItem.id) {
+                        roleNameArray.push(roleItem.roleName)
+                    }
+                })
+            });
+
+            this.edit.roleIds = roleIdArray.toString()
+            this.edit.roleNames = roleNameArray.toString()
+
             updateSysUser(this.edit).then(res => {
-                if (res.code === '200') {
+                if (res && res.code === '200') {
                     this.$Message['info']({
                         background: true,
                         content: '修改成功'
-                    })
-                } else {
-                    this.$Message['info']({
-                        background: true,
-                        content: res.message
                     })
                 }
                 this.searchUser()
@@ -314,15 +333,10 @@ export default {
             this.save.roleNames = roleNameArray.toString()
 
             saveSysUser(this.save).then(res => {
-                if (res.code === '200') {
+                if (res && res.code === '200') {
                     this.$Message['info']({
                         background: true,
                         content: '保存成功'
-                    })
-                } else {
-                    this.$Message['info']({
-                        background: true,
-                        content: res.message
                     })
                 }
                 this.save = {}
@@ -335,13 +349,13 @@ export default {
 
     created() {
         getUserStatusList().then(res => {
-            if (res.code === '200') {
+            if (res && res.code === '200') {
                 this.userStatusList = res.data
             }
         })
 
         getSysRoleList().then(res => {
-            if (res.code === '200') {
+            if (res && res.code === '200') {
                 this.roleList = res.data
             }
         })
