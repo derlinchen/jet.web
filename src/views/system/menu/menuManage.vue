@@ -38,7 +38,7 @@ export default {
     data() {
         return {
             search: {},
-            loding: false
+            loading: false
         }
     },
     methods: {

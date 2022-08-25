@@ -3,17 +3,17 @@
         <div>
             <Form inline :label-width="100">
                 <FormItem label="用户编号：">
-                    <Input clearable placeholder="输入用户编号" v-model="search.userCode" />
+                    <Input clearable placeholder="输入用户编号" v-model="search.item.userCode" />
                 </FormItem>
                 <FormItem label="用户名称：">
-                    <Input clearable placeholder="输入用户名称" v-model="search.userName" />
+                    <Input clearable placeholder="输入用户名称" v-model="search.item.userName" />
                 </FormItem>
 
                 <Space wrap>
                     <Button @click="searchUser" icon="md-search" type="primary">
                         查询
                     </Button>
-                    <Button @click="addUser" icon="md-add" type="primary">
+                    <Button @click="showAddUserModal" icon="md-add" type="primary">
                         新增
                     </Button>
                     <Button @click="deleteUsers" icon="md-trash" type="error">
@@ -29,59 +29,36 @@
             @on-selection-change="columnSelectChange">
             <template #action="{ row }">
                 <Button type="primary" size="small" style="margin-right: 5px" @click="showUser(row)">查看</Button>
-                <Button type="primary" size="small" style="margin-right: 5px" @click="showEditUser(row)">编辑</Button>
+                <Button type="primary" size="small" style="margin-right: 5px"
+                    @click="showEditUserModal(row)">编辑</Button>
                 <Button type="error" size="small" @click="deleteUser(row)">删除</Button>
             </template>
         </Table>
         <div style="margin-top:10px">
-            <Page :total="page.total" :page-size="page.pageSize" show-total show-elevator show-sizer
+            <Page :total="search.total" :page-size="search.pageSize" show-total show-elevator show-sizer
                 :page-size-opts="[10, 20, 30, 40, 50, 60, 70, 80]" @on-change="pageChange"
                 @on-page-size-change="pageSizeChange" />
         </div>
 
-        <Modal v-model="editModal" width="700" title="修改用户" @on-ok="editUser">
-            <Form inline :label-width="100">
-                <FormItem label="用户编号：">
-                    <Input clearable v-model="edit.userCode" style="width: 220px" />
-                </FormItem>
-                <FormItem label="用户名称">
-                    <Input clearable v-model="edit.userName" style="width: 220px" />
-                </FormItem>
-            </Form>
-            <Form inline :label-width="100">
-                <FormItem label="用户状态：">
-                    <Select v-model="edit.userStatus" style="width:220px">
-                        <Option v-for="item in userStatusList" :value="item.code" :key="item.code">{{ item.name }}
-                        </Option>
-                    </Select>
-                </FormItem>
-                <FormItem label="角色：">
-                    <Select v-model="edit.roleIdArray" style="width:220px" multiple>
-                        <Option v-for="item in roleList" :value="item.id" :key="item.id">{{ item.roleName }}
-                        </Option>
-                    </Select>
-                </FormItem>
-            </Form>
-        </Modal>
 
-        <Modal v-model="addModal" width="700" title="用户" @on-ok="saveUser">
+        <Modal v-model="modalStatus" width="700" :title="modalTitle" @on-ok="sumbitUserModal">
             <Form inline :label-width="100">
                 <FormItem label="用户编号：">
-                    <Input clearable v-model="save.userCode" style="width: 220px" />
+                    <Input clearable v-model="paramData.userCode" style="width: 220px" />
                 </FormItem>
                 <FormItem label="用户名称">
-                    <Input clearable v-model="save.userName" style="width: 220px" />
+                    <Input clearable v-model="paramData.userName" style="width: 220px" />
                 </FormItem>
             </Form>
             <Form inline :label-width="100">
                 <FormItem label="用户状态：">
-                    <Select v-model="save.userStatus" style="width:220px">
+                    <Select v-model="paramData.userStatus" style="width:220px">
                         <Option v-for="item in userStatusList" :value="item.code" :key="item.code">{{ item.name }}
                         </Option>
                     </Select>
                 </FormItem>
                 <FormItem label="角色：">
-                    <Select v-model="save.roleIdArray" style="width:220px" multiple>
+                    <Select v-model="paramData.roleIdArray" style="width:220px" multiple>
                         <Option v-for="item in roleList" :value="item.id" :key="item.id">{{ item.roleName }}
                         </Option>
                     </Select>
@@ -90,7 +67,7 @@
 
             <Form :label-width="100">
                 <FormItem label="用户描述：">
-                    <Input v-model="save.userDesc" type="textarea" style="width: 550px;" />
+                    <Input v-model="paramData.userDesc" type="textarea" style="width: 550px;" />
                 </FormItem>
             </Form>
         </Modal>
@@ -111,7 +88,7 @@ import {
     saveSysUser
 } from '@/api/userManage'
 
-import { getSysRoleList } from '@/api/roleManage'
+import { getSysRoleSelect } from '@/api/roleManage'
 
 export default {
     name: 'userManage',
@@ -122,21 +99,14 @@ export default {
 
             // 查询条件
             search: {
-                userCode: '',
-                userName: ''
+                pageNo: 1,
+                total: 0,
+                pageSize: 10,
+                item: {}
             },
 
-            // 编辑字段
-            edit: {},
-
-            // 新增字段
-            save: {},
-
-            // 修改弹窗
-            editModal: false,
-
-            // 新增弹窗
-            addModal: false,
+            // 表单参数
+            paramData: {},
 
             // 用户状态
             userStatusList: [],
@@ -189,12 +159,15 @@ export default {
             // 复选框选中信息
             selectRow: [],
 
-            // 分页信息
-            page: {
-                pageNo: 1,
-                total: 0,
-                pageSize: 10,
-            }
+            // 弹窗状态
+            modalStatus: false,
+
+            // 弹窗类型
+            modalType: '',
+
+            // 弹窗标题
+            modalTitle: ''
+
         }
     },
 
@@ -202,43 +175,93 @@ export default {
         columnSelectChange(row) {
             this.selectRow = row
         },
+
         searchUser() {
             this.loading = true
-            let param = {
-                pageNo: this.page.pageNo,
-                pageSize: this.page.pageSize,
-                item: {
-                    userCode: this.search.userCode,
-                    userName: this.search.userName
-                }
-            }
-            searchSysUser(param).then(res => {
+            searchSysUser(this.search).then(res => {
                 if (res && res.code === '200') {
                     this.tableData = res.data.list
-                    this.page.total = res.data.totalRecords
-                    this.pageSize = res.data.pageSize
+                    this.search.total = res.data.totalRecords
+                    this.search.pageSize = res.data.pageSize
                 }
                 this.loading = false
             })
         },
+
         pageChange(pageNo) {
-            this.page.pageNo = pageNo
+            this.search.pageNo = pageNo
             this.searchUser()
         },
 
         pageSizeChange(pageSize) {
-            this.page.pageNo = 1
-            this.page.pageSize = pageSize
+            this.search.pageNo = 1
+            this.search.pageSize = pageSize
             this.searchUser()
         },
-        showEditUser(row) {
-            this.editModal = true
-            this.edit = row
-            let roleIds = row.roleIds
+        
+        showEditUserModal(row) {
+            this.modalStatus = true
+            this.modalTitle = '修改用户'
+            this.modalType = 'edit'
+            this.paramData = JSON.parse(JSON.stringify(row))
+            let roleIds = this.paramData.roleIds
             if (roleIds) {
-                this.edit.roleIdArray = roleIds.split(',')
+                this.paramData.roleIdArray = roleIds.split(',')
             }
         },
+
+        showAddUserModal() {
+            this.modalStatus = true
+            this.modalTitle = '新增用户'
+            this.modalType = 'add'
+        },
+
+        sumbitUserModal() {
+            let roleIdArray = this.paramData.roleIdArray
+            if (!roleIdArray || roleIdArray.length === 0) {
+                this.$Message['error']({
+                    background: true,
+                    content: '请选则角色'
+                })
+                return
+            }
+            let roleList = this.roleList
+            let roleNameArray = []
+            roleIdArray.forEach(roleId => {
+                roleList.forEach(roleItem => {
+                    if (roleId === roleItem.id) {
+                        roleNameArray.push(roleItem.roleName)
+                    }
+                })
+            });
+
+            this.paramData.roleIds = roleIdArray.toString()
+            this.paramData.roleNames = roleNameArray.toString()
+
+            if (this.modalType === 'add') {
+                saveSysUser(this.paramData).then(res => {
+                    if (res && res.code === '200') {
+                        this.$Message['info']({
+                            background: true,
+                            content: '保存成功'
+                        })
+                    }
+                    this.save = {}
+                    this.searchUser()
+                })
+            } else {
+                updateSysUser(this.paramData).then(res => {
+                    if (res && res.code === '200') {
+                        this.$Message['info']({
+                            background: true,
+                            content: '修改成功'
+                        })
+                    }
+                    this.searchUser()
+                })
+            }
+        },
+
         deleteUser(row) {
             let param = {
                 id: row.id
@@ -250,15 +273,9 @@ export default {
                         content: '删除成功'
                     })
                 }
-                this.page.pageNo = 1
+                this.search.pageNo = 1
                 this.searchUser()
             })
-        },
-        showUser(row) {
-
-        },
-        addUser() {
-            this.addModal = true
         },
         deleteUsers() {
             if (this.selectRow.length === 0) {
@@ -280,69 +297,11 @@ export default {
                         content: '删除成功'
                     })
                 }
-                this.page.pageNo = 1
+                this.search.pageNo = 1
                 this.searchUser()
             })
         },
-
-        editUser() {
-            let roleIdArray = this.edit.roleIdArray
-            if (!roleIdArray || roleIdArray.length === 0) {
-                this.$Message['error']({
-                    background: true,
-                    content: '请选则角色'
-                })
-                return
-            }
-            let roleList = this.roleList
-            let roleNameArray = []
-            roleIdArray.forEach(roleId => {
-                roleList.forEach(roleItem => {
-                    if (roleId === roleItem.id) {
-                        roleNameArray.push(roleItem.roleName)
-                    }
-                })
-            });
-
-            this.edit.roleIds = roleIdArray.toString()
-            this.edit.roleNames = roleNameArray.toString()
-
-            updateSysUser(this.edit).then(res => {
-                if (res && res.code === '200') {
-                    this.$Message['info']({
-                        background: true,
-                        content: '修改成功'
-                    })
-                }
-                this.searchUser()
-            })
-        },
-        saveUser() {
-            let roleIdArray = this.save.roleIdArray
-            let roleList = this.roleList
-            let roleNameArray = []
-            roleIdArray.forEach(roleId => {
-                roleList.forEach(roleItem => {
-                    if (roleId === roleItem.id) {
-                        roleNameArray.push(roleItem.roleName)
-                    }
-                })
-            });
-
-            this.save.roleIds = roleIdArray.toString()
-            this.save.roleNames = roleNameArray.toString()
-
-            saveSysUser(this.save).then(res => {
-                if (res && res.code === '200') {
-                    this.$Message['info']({
-                        background: true,
-                        content: '保存成功'
-                    })
-                }
-                this.save = {}
-                this.searchUser()
-            })
-
+        showUser(row) {
 
         }
     },
@@ -354,15 +313,12 @@ export default {
             }
         })
 
-        getSysRoleList().then(res => {
+        getSysRoleSelect().then(res => {
             if (res && res.code === '200') {
                 this.roleList = res.data
             }
         })
-    },
 
-    // 初次加载调用方法
-    mounted() {
         this.searchUser()
     }
 }
