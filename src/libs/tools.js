@@ -1,3 +1,6 @@
+import { Message } from 'view-ui-plus';
+
+
 export const objEqual = (obj1, obj2) => {
     const keysArr1 = Object.keys(obj1)
     const keysArr2 = Object.keys(obj2)
@@ -14,4 +17,12 @@ export const objEqual = (obj1, obj2) => {
  */
 export const getUnion = (arr1, arr2) => {
     return Array.from(new Set([...arr1, ...arr2]))
+}
+
+export const error = (content) => {
+    Message.error(content)
+}
+
+export const info = (content) => {
+    Message.info(content)
 }

@@ -62,9 +62,17 @@
 
     
 <script>
-import { searchSysRole, deleteSysRole, saveSysRole, updateSysRole, deleteSysRoles } from '@/api/roleManage'
-import { getSysMenuTree } from '@/api/menuManage'
+import {
+    searchSysRole,
+    deleteSysRole,
+    saveSysRole,
+    updateSysRole,
+    deleteSysRoles,
+    bindMenus
+} from '@/api/roleManage'
 
+import { getSysMenuTree } from '@/api/menuManage'
+import * as tools from '@/libs/tools'
 
 export default {
     name: 'roleManage',
@@ -208,19 +216,22 @@ export default {
             }
         },
         showBindMenuModal() {
-            if (this.selectRoleRow.length !== 1) {
-                // tools.warn('请选则需绑定的单个角色')
-                this.$Message['error']({
-                    background: true,
-                    content: '请选则需绑定的单个角色'
-                })
+            if (this.selectRoleRow.length === 0) {
+                tools.error('请选则需绑定的角色')
                 return
             }
-            this.getMenuTree()
+            if (this.selectRoleRow.length > 1) {
+                tools.error('只能对一个角色进行菜单绑定')
+                return
+            }
+            const roleId = this.selectRoleRow[0].id
+            this.getMenuTree(roleId)
             this.bindModalStatus = true
         },
-        getMenuTree() {
-            const param = {}
+        getMenuTree(roleId) {
+            const param = {
+                roleId: roleId
+            }
             getSysMenuTree(param).then(res => {
                 if (res && res.code === '200') {
                     this.treeData = res.data
@@ -228,7 +239,22 @@ export default {
             })
         },
         bindMenu() {
-console.log(this.$refs.menuTree.getCheckedAndIndeterminateNodes())
+            const selectNodes = this.$refs.menuTree.getCheckedAndIndeterminateNodes()
+            if (!selectNodes || selectNodes.length === 0) {
+                tools.error('请选则菜单');
+            }
+            const param = {
+                roleId: this.selectRoleRow[0].id,
+                menuIds: selectNodes.map(item => {
+                    return item.id
+                })
+            }
+
+            bindMenus(param).then(res => {
+                if (res && res.code === '200') {
+                    tools.info('绑定成功');
+                }
+            })
         }
     },
     created() {

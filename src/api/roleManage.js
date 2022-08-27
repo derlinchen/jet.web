@@ -60,3 +60,11 @@ export const deleteSysRoles = (param) => {
         method: 'delete'
     })
 }
+
+export const bindMenus = (param) => {
+    return request.request({
+        url: '/erp/sysRole/v1/bindMenus',
+        data: param,
+        method: 'post'
+    })
+}
