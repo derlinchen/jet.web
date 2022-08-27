@@ -16,7 +16,7 @@
                     <Button @click="showAddRoleModal" icon="md-add" type="primary">
                         新增
                     </Button>
-                    <Button @click="bindMenu" icon="md-repeat" type="primary">
+                    <Button @click="showBindMenuModal" icon="md-repeat" type="primary">
                         绑定菜单
                     </Button>
                     <Button @click="deleteRoles" icon="md-trash" type="error">
@@ -42,7 +42,7 @@
                 @on-page-size-change="pageSizeChange" />
         </div>
 
-        <Modal v-model="modalStatus" width="700" :title="modalTitle" @on-ok="sumbitRoleModal">
+        <Modal v-model="roleModalStatus" width="700" :title="modalTitle" @on-ok="sumbitRoleModal">
             <Form inline :label-width="100">
                 <FormItem label="角色编号：">
                     <Input clearable v-model="paramData.roleCode" style="width: 220px" />
@@ -53,12 +53,18 @@
             </Form>
         </Modal>
 
+        <Modal v-model="bindModalStatus" width="500" title="绑定菜单" @on-ok="bindMenu">
+            <Tree :data="treeData" ref="menuTree" show-checkbox multiple></Tree>
+        </Modal>
+
     </Card>
 </template>
 
     
 <script>
 import { searchSysRole, deleteSysRole, saveSysRole, updateSysRole, deleteSysRoles } from '@/api/roleManage'
+import { getSysMenuTree } from '@/api/menuManage'
+
 
 export default {
     name: 'roleManage',
@@ -102,9 +108,12 @@ export default {
             ],
             tableData: [],
             paramData: {},
-            modalStatus: false,
+            roleModalStatus: false,
             modalTitle: '',
-            modalType: ''
+            modalType: '',
+            bindModalStatus: false,
+            treeData: [],
+            selectRoleRow: []
         }
     },
     methods: {
@@ -120,19 +129,19 @@ export default {
             })
         },
         showAddRoleModal() {
-            this.modalStatus = true
+            this.roleModalStatus = true
             this.modalTitle = '新增角色'
             this.modalType = 'add'
             this.paramData = {}
         },
         showEditRoleModal(row) {
-            this.modalStatus = true
+            this.roleModalStatus = true
             this.modalTitle = '修改角色'
             this.modalType = 'edit'
             this.paramData = JSON.parse(JSON.stringify(row))
         },
         deleteRoles() {
-            let ids = this.selectRow.map(item => {
+            let ids = this.selectRoleRow.map(item => {
                 return item.id
             })
 
@@ -164,7 +173,7 @@ export default {
             })
         },
         columnSelectChange(row) {
-            this.selectRow = row
+            this.selectRoleRow = row
         },
         pageChange(pageNo) {
             this.search.pageNo = pageNo
@@ -197,10 +206,34 @@ export default {
                     this.searchRole()
                 })
             }
+        },
+        showBindMenuModal() {
+            if (this.selectRoleRow.length !== 1) {
+                // tools.warn('请选则需绑定的单个角色')
+                this.$Message['error']({
+                    background: true,
+                    content: '请选则需绑定的单个角色'
+                })
+                return
+            }
+            this.getMenuTree()
+            this.bindModalStatus = true
+        },
+        getMenuTree() {
+            const param = {}
+            getSysMenuTree(param).then(res => {
+                if (res && res.code === '200') {
+                    this.treeData = res.data
+                }
+            })
+        },
+        bindMenu() {
+console.log(this.$refs.menuTree.getCheckedAndIndeterminateNodes())
         }
     },
     created() {
         this.searchRole()
+
     }
 }
 </script>
