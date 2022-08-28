@@ -241,7 +241,7 @@ export default {
         bindMenu() {
             const selectNodes = this.$refs.menuTree.getCheckedAndIndeterminateNodes()
             if (!selectNodes || selectNodes.length === 0) {
-                tools.error('请选则菜单');
+                tools.error('请选则菜单')
             }
             const param = {
                 roleId: this.selectRoleRow[0].id,
@@ -252,8 +252,9 @@ export default {
 
             bindMenus(param).then(res => {
                 if (res && res.code === '200') {
-                    tools.info('绑定成功');
+                    tools.info('绑定成功')
                 }
+                this.searchRole()
             })
         }
     },
