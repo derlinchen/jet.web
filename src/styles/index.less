@@ -4,3 +4,28 @@
 @menu-dark-title: #001529;
 @menu-dark-active-bg: #000c17;
 @layout-sider-background: #001529;
+
+// 定义合模型
+.bm {
+    /*（伸缩盒最老版本）*/
+    display: box;
+    /* iOS 6-, Safari 3.1-6 */
+    display: -webkit-box;
+    /* Chrome */
+    display: -webkit-flex;
+    /* Firefox 19 */
+    display: -moz-box;
+    /*微软浏览器处理*/
+    display: -ms-flexbox;
+    /*flex容器*/
+    display: flex;
+}
+
+.bm-ac {
+    /*子元素-垂直居中（在侧轴、纵轴上）*/
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    -ms-align-items: center;
+    -o-align-items: center;
+    align-items: center;
+}
