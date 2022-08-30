@@ -10,3 +10,42 @@ export const getSysMenuTree = (param) => {
         method: 'post'
     })
 }
+
+export const getSysMenuList = (param)=> {
+    return request.request({
+        header: {
+            'Content-Type': 'application/json'
+        },
+        url: '/erp/sysMenu/v1/getSysMenuList',
+        data: param,
+        method: 'post'
+    })
+}
+
+
+export const deleteSysMenu = (param) => {
+    return request.request({
+        url: '/erp/sysMenu/v1/deleteSysMenuItem',
+        data: param,
+        method: 'delete'
+    })
+}
+
+export const getSysMenu = (param) => {
+    return request.request({
+        url: '/erp/sysMenu/v1/getSysMenu',
+        params: param,
+        method: 'get'
+    })
+}
+
+
+export const getSysMenuSelect = (param)=> {
+    return request.request({
+        header: {
+            'Content-Type': 'application/json'
+        },
+        url: '/erp/sysMenu/v1/getSysMenuSelect',
+        method: 'post'
+    })
+}
