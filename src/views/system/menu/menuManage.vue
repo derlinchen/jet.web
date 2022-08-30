@@ -135,6 +135,9 @@ export default {
             this.modalStatus = true
             this.modalTitle = '新增菜单'
             this.modalType = 'add'
+            this.paramData = {
+                parentId: ''
+            }
         },
         showEditMenu() {
             if (Object.keys(this.selectRow).length === 0) {
@@ -175,12 +178,11 @@ export default {
             this.selectRow = row
         },
         sumbitMenuModal() {
-
+            
         },
         getMenuSelect() {
             getSysMenuSelect().then(res => {
                 if (res && res.code === '200') {
-                    console.log(res.data)
                     this.parentMenuList = res.data
                 }
             })
