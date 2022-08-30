@@ -214,6 +214,7 @@ export default {
             this.modalStatus = true
             this.modalTitle = '新增用户'
             this.modalType = 'add'
+            this.paramData = {}
         },
 
         sumbitUserModal() {
@@ -246,7 +247,7 @@ export default {
                             content: '保存成功'
                         })
                     }
-                    this.save = {}
+                    this.paramData = {}
                     this.searchUser()
                 })
             } else {
