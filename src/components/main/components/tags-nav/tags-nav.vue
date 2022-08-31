@@ -73,7 +73,7 @@ export default {
 
     data() {
         return {
-            tagBodyLeft: 0,
+            tagBodyLeft: 5,
             rightOffset: 40,
             outerPadding: 4,
             contextMenuLeft: 0,
@@ -121,7 +121,7 @@ export default {
             const outerWidth = this.$refs.scrollOuter.offsetWidth
             const bodyWidth = this.$refs.scrollBody.offsetWidth
             if (offset > 0) {
-                this.tagBodyLeft = Math.min(0, this.tagBodyLeft + offset)
+                this.tagBodyLeft = Math.min(5, this.tagBodyLeft + offset)
             } else {
                 if (outerWidth < bodyWidth) {
                     if (this.tagBodyLeft < -(bodyWidth - outerWidth)) {
@@ -130,7 +130,7 @@ export default {
                         this.tagBodyLeft = Math.max(this.tagBodyLeft + offset, outerWidth - bodyWidth)
                     }
                 } else {
-                    this.tagBodyLeft = 0
+                    this.tagBodyLeft = 5
                 }
             }
         },
@@ -185,13 +185,13 @@ export default {
             const outerWidth = this.$refs.scrollOuter.offsetWidth
             const bodyWidth = this.$refs.scrollBody.offsetWidth
             if (bodyWidth < outerWidth) {
-                this.tagBodyLeft = 0
+                this.tagBodyLeft = 5
             } else if (tag.offsetLeft < -this.tagBodyLeft) {
                 // 标签在可视区域左侧
                 this.tagBodyLeft = -tag.offsetLeft + this.outerPadding
             } else if (tag.offsetLeft > -this.tagBodyLeft && tag.offsetLeft + tag.offsetWidth < -this.tagBodyLeft + outerWidth) {
                 // 标签在可视区域
-                this.tagBodyLeft = Math.min(0, outerWidth - tag.offsetWidth - tag.offsetLeft - this.outerPadding)
+                this.tagBodyLeft = Math.min(5, outerWidth - tag.offsetWidth - tag.offsetLeft - this.outerPadding)
             } else {
                 // 标签在可视区域右侧
                 this.tagBodyLeft = -(tag.offsetLeft - (outerWidth - this.outerPadding - tag.offsetWidth))
