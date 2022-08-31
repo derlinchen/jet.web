@@ -74,9 +74,11 @@ export default {
     data() {
         return {
             tagBodyLeft: 0,
-            visible: false,
+            rightOffset: 40,
+            outerPadding: 4,
             contextMenuLeft: 0,
             contextMenuTop: 0,
+            visible: false,
             menuList: {
                 others: '关闭其他',
                 all: '关闭所有'
@@ -115,6 +117,7 @@ export default {
 
         // 对tag进行滚动操作
         handleScroll(offset) {
+            console.log(offset)
             const outerWidth = this.$refs.scrollOuter.offsetWidth
             const bodyWidth = this.$refs.scrollBody.offsetWidth
             if (offset > 0) {

@@ -31,7 +31,7 @@
                     <Input clearable v-model="paramData.parentTitle" style="width: 220px" disabled />
                 </FormItem>
                 <FormItem label="父级菜单" v-else>
-                    <TreeSelect v-model="paramData.parentId" :data="parentMenuList" style="width: 220px" />
+                    <TreeSelect v-model="paramData.parentId" :data="parentMenuList" style="width: 220px" clearable />
                 </FormItem>
                 <FormItem label="菜单标题">
                     <Input clearable v-model="paramData.title" style="width: 220px" />
@@ -61,7 +61,9 @@ import {
     getSysMenuList,
     deleteSysMenu,
     getSysMenu,
-    getSysMenuSelect
+    getSysMenuSelect,
+    updateSysMenu,
+    saveSysMenu
 } from '@/api/menuManage'
 import * as tools from '@/libs/tools'
 
@@ -169,15 +171,33 @@ export default {
             }
             deleteSysMenu(param).then(res => {
                 if (res && res.code === '200') {
+                    this.getMenuList()
                     tools.info("删除成功");
                 }
-                this.getMenuList()
+                this.getMenuSelect()
             })
         },
         menuRowClick(row) {
             this.selectRow = row
         },
         sumbitMenuModal() {
+            if(this.modalType === 'add') {
+                saveSysMenu(this.paramData).then(res => {
+                    if(res && res.code === '200') {
+                        this.getMenuList()
+                        tools.info('新增成功')
+                    }
+                    this.getMenuSelect()
+                })
+            } else {
+                updateSysMenu(this.paramData).then(res => {
+                    if(res && res.code === '200') {
+                        this.getMenuList()
+                        tools.info('修改成功')
+                    }
+                    this.getMenuSelect()
+                })
+            }
             
         },
         getMenuSelect() {
@@ -187,7 +207,6 @@ export default {
                 }
             })
         }
-
     },
     created() {
         this.getMenuSelect()

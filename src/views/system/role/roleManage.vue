@@ -36,7 +36,7 @@
             </template>
         </Table>
 
-        <div style="margin-top:10px">
+        <div style="margin-top:10px; text-align: right;">
             <Page :total="search.total" :page-size="search.pageSize" show-total show-elevator show-sizer
                 :page-size-opts="[10, 20, 30, 40, 50, 60, 70, 80]" @on-change="pageChange"
                 @on-page-size-change="pageSizeChange" />

@@ -49,3 +49,26 @@ export const getSysMenuSelect = (param)=> {
         method: 'post'
     })
 }
+
+
+export const updateSysMenu = (param) => {
+    return request.request({
+        header: {
+            'Content-Type': 'application/json'
+        },
+        url: '/erp/sysMenu/v1/updateSysMenu',
+        data: param,
+        method: 'post'
+    })
+}
+
+export const saveSysMenu = (param) => {
+    return request.request({
+        header: {
+            'Content-Type': 'application/json'
+        },
+        url: '/erp/sysMenu/v1/saveSysMenu',
+        data: param,
+        method: 'post'
+    })
+}
