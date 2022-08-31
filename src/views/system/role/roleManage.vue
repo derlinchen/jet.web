@@ -38,8 +38,8 @@
 
         <div style="margin-top:10px; text-align: right;">
             <Page :total="search.total" :page-size="search.pageSize" show-total show-elevator show-sizer
-                :page-size-opts="[10, 20, 30, 40, 50, 60, 70, 80]" @on-change="pageChange"
-                @on-page-size-change="pageSizeChange" />
+            :page-size-opts="[15, 30, 45, 60, 75, 90]" @on-change="pageChange"
+            @on-page-size-change="pageSizeChange" />
         </div>
 
         <Modal v-model="roleModalStatus" width="700" :title="modalTitle" @on-ok="sumbitRoleModal">
@@ -81,7 +81,7 @@ export default {
             search: {
                 pageNo: 1,
                 total: 0,
-                pageSize: 10,
+                pageSize: 15,
                 item: {}
             },
             loading: false,
