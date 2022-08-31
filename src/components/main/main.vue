@@ -2,7 +2,7 @@
     <Layout style="height: 100%" class="main">
         <!-- 左边区域 -->
         <Sider hide-trigger collapsible :width="256" :collapsed-width="64" v-model="collapsed" class="left-sider"
-            :style="{ overflow: 'hidden', background:'#fff' }">
+            :style="{ overflow: 'hidden', background: '#fff' }">
             <!-- 左边菜单 -->
             <side-menu accordion ref="sideMenu" :active-name="$route.name" :collapsed="collapsed"
                 @on-select="turnToPage" :menu-list="menuList" :theme="theme">
