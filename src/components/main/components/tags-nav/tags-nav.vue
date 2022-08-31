@@ -117,7 +117,6 @@ export default {
 
         // 对tag进行滚动操作
         handleScroll(offset) {
-            console.log(offset)
             const outerWidth = this.$refs.scrollOuter.offsetWidth
             const bodyWidth = this.$refs.scrollBody.offsetWidth
             if (offset > 0) {
