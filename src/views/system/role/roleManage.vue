@@ -28,7 +28,7 @@
         </div>
 
         <Table border :loading="loading" ref="selection" :columns="columns" :data="tableData"
-            @on-selection-change="columnSelectChange">
+            @on-selection-change="columnSelectChange" :height="tableHeight">
             <template #action="{ row }">
                 <Button type="primary" size="small" style="margin-right: 5px"
                     @click="showEditRoleModal(row)">编辑</Button>
@@ -121,7 +121,8 @@ export default {
             modalType: '',
             bindModalStatus: false,
             treeData: [],
-            selectRoleRow: []
+            selectRoleRow: [],
+            tableHeight: 500
         }
     },
     methods: {
@@ -256,11 +257,17 @@ export default {
                 }
                 this.searchRole()
             })
+        },
+        getTableHeight() {
+            this.tableHeight = window.innerHeight - 280;
         }
     },
     created() {
         this.searchRole()
-
+    },
+    mounted() {
+        window.addEventListener('resize', this.getTableHeight);
+        this.getTableHeight();
     }
 }
 </script>
